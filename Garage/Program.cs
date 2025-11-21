@@ -4,8 +4,8 @@
     {
         static void Main(string[] args)
         {
-            var application = new ApplicationManager();
-            application.Run();
+            ApplicationManager applicationManager = new();
+            applicationManager.Run();
         }
     }
 }

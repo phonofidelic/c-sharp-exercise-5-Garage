@@ -4,7 +4,9 @@ namespace Garage
 {
     internal class ApplicationManager
     {
-        public int? Selection { get; private set; }
+        public int? Selection { get; private set; } // ToDo: remove
+        
+        private List<Application> _applications = [];
         public ApplicationManager()
         {
             Selection = null;
@@ -12,23 +14,27 @@ namespace Garage
 
         internal void Run()
         {
-            MenuList<MenuListItem> options =
-            [
-                new(name: "List vehicles"),
-                new(name: "Park a vehicle"),
-                new(name: "Remove a vehicle"),
-            ];
+            // TodDo: This should be inside of an Application instance
+            /*
+             * Status status;
+             * GarageApplication garageApp = new();
+             * garageAppStatus = garageApp.Start(config);
+             * 
+             * UIApplication clientApp = new();
+             * clientAppStatus clientApp.Start()
+             */
 
-            ConsoleMenu mainMenu = new(
-                name: "Main menu", 
-                description: "Use the menu to make a selection:", 
-                options);
+            GarageUIApplication client = new();
+            AddApplication(client);
 
-            do
-            {
-                mainMenu.Render();
-                ConsoleUI.ReadLine();
-            } while (Selection == null);
+            foreach (Application app in _applications) {
+                app.Start();
+            }
+        }
+
+        private void AddApplication(Application application)
+        {
+            _applications.Add(application);
         }
     }
 }
