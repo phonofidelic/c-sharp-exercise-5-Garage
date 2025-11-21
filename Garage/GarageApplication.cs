@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace Garage
 {
-    public class GarageApplication : Application
+    public class GarageApplication(string name) : Application(name)
     {
-        public override ApplicationStatus Start() {
+        public override ApplicationStatus Run() {
             return new(1);
         }
     }

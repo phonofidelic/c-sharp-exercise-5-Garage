@@ -5,7 +5,7 @@
         static void Main(string[] args)
         {
             ApplicationManager applicationManager = new();
-            applicationManager.Run();
+            applicationManager.Start();
         }
     }
 }

@@ -7,16 +7,15 @@ using System.Threading.Tasks;
 
 namespace Garage
 {
-    internal class GarageUIApplication : Application
+    internal class GarageUIApplication(string name) : Application(name)
     {
-        public int? Selection { get; private set; }
-        public override ApplicationStatus Start()
+        public override ApplicationStatus Run()
         {
             MenuList<MenuListItem> options =
             [
-                new(name: "List vehicles"),
-                new(name: "Park a vehicle"),
-                new(name: "Remove a vehicle"),
+                new(name: "List vehicles", 1, new("Parked Vehicles", "Showing all vehicles currently parked in the garage:", [])),
+                new(name: "Park a vehicle", 2),
+                new(name: "Remove a vehicle", 3),
             ];
 
             ConsoleMenu mainMenu = new(
@@ -24,12 +23,15 @@ namespace Garage
                 description: "Use the menu to make a selection:",
                 options);
 
-            do
+            try
             {
                 mainMenu.Render();
-                ConsoleUI.ReadLine();
+            } catch (Exception ex)
+            {
+                return new ApplicationStatus(-1, ex);
+            }
+            ConsoleUI.Continue();
                 // ToDo: while (status.code > 0)
-            } while (Selection == null);
 
             return new ApplicationStatus(0);
         }

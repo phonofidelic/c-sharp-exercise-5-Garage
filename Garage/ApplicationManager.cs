@@ -2,39 +2,53 @@
 
 namespace Garage
 {
-    internal class ApplicationManager
+    internal class ApplicationManager()
     {
-        public int? Selection { get; private set; } // ToDo: remove
-        
         private List<Application> _applications = [];
-        public ApplicationManager()
-        {
-            Selection = null;
-        }
 
-        internal void Run()
+        public void Start()
         {
-            // TodDo: This should be inside of an Application instance
-            /*
+            // Create application instances to run with the manager
+            /* TodDo:
              * Status status;
-             * GarageApplication garageApp = new();
-             * garageAppStatus = garageApp.Start(config);
-             * 
-             * UIApplication clientApp = new();
-             * clientAppStatus clientApp.Start()
+             * GarageApplication garageApp = new(config);
+             * AddApplication(garageApp);
              */
+            GarageUIApplication client = new("Garage UI client application");
+            Add(client);
 
-            GarageUIApplication client = new();
-            AddApplication(client);
-
-            foreach (Application app in _applications) {
-                app.Start();
+            foreach (Application app in _applications)
+            {
+                Run(app);
             }
         }
 
-        private void AddApplication(Application application)
+        private static void Run(Application app)
         {
-            _applications.Add(application);
+            ApplicationStatus status = new(1);
+            do
+            {
+                try
+                {
+                    status = app.Run();
+                }
+                catch (Exception ex) {
+                    // Unhandled exception
+                    ConsoleUI.WriteException($"\nUncaught exception occurred in ' {app.Name}' :\n :\n{ex.Message}"); ;
+                } finally
+                {
+                    // End application
+                    ConsoleUI.WriteLineInfo($"Shutting down application '{app.Name}'");
+                }
+            } while (status.Code > 0);
+
+            if (status.Code < 0 && status.Exception != null)
+                ConsoleUI.WriteException($"\nUnhandled exception occurred in '{app.Name}' :\n{status.Exception.Message}");
+        }
+
+        private void Add(Application app)
+        {
+            _applications.Add(app);
         }
     }
 }
