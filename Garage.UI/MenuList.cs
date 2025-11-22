@@ -9,7 +9,7 @@ namespace Garage.UI
 {
     public class MenuList<T> : IEnumerable<T>
     {
-        private readonly List<T> _list;
+        public int Count { get; private set; } = 0;        private readonly List<T> _list;
 
 
         public MenuList()
@@ -19,6 +19,7 @@ namespace Garage.UI
 
         public void Add(T item)
         {
+            Count++;
             _list.Add(item);
         }
 

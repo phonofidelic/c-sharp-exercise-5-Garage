@@ -9,7 +9,10 @@ namespace Garage
     public class GarageApplication(string name) : Application(name)
     {
         public override ApplicationStatus Run() {
-            return new(1);
+            do
+            {
+                return new ApplicationStatus(0);
+            } while(true);
         }
     }
 }

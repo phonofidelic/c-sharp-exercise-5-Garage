@@ -3,22 +3,10 @@ namespace Garage.UI
 {
     public static class ConsoleUI
     {
-        public static int GetSelectionFromReadKey()
+        public static ConsoleKeyInfo GetSelectionFromReadKey()
         {
             WriteLineInfo($"\nSelect an option from the menu");
-            ConsoleKeyInfo input = Console.ReadKey(intercept: true);
-            if (input.Key == ConsoleKey.Q)
-            {
-                return 0;
-            }
-            string inputString = input.Key.ToString();
-
-            int option;
-            var isValidOption = int.TryParse(inputString, out option);
-            if (isValidOption) { 
-                return option;
-            }
-            throw new Exception($"'{inputString}' is not a valid option. Please select an available option from the menu.");
+            return Console.ReadKey(intercept: true);
         }
         public static void Continue()
         {
@@ -48,7 +36,7 @@ namespace Garage.UI
         public static void WriteException(string message)
         {
             Console.ForegroundColor = ConsoleColor.Red;
-            Console.WriteLine(message);
+            Console.WriteLine($"\n{message}");
             Console.ResetColor();
         }
     }

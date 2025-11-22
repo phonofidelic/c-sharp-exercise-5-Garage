@@ -14,8 +14,11 @@ namespace Garage
             MenuList<MenuListItem> options =
             [
                 new(name: "List vehicles", 1, new("Parked Vehicles", "Showing all vehicles currently parked in the garage:", [])),
-                new(name: "Park a vehicle", 2),
-                new(name: "Remove a vehicle", 3),
+                new(name: "Park a vehicle", 2, new("Enter vehicle details", "", [
+                    new("Enter VIN:", 1),
+                    new("Enter vehicle type:", 2),
+                ])),
+                new(name: "Remove a vehicle", 3, new("Remove vehicle", "Select a vehicle to remove from the garage;", [])),
             ];
 
             ConsoleMenu mainMenu = new(

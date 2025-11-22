@@ -8,7 +8,9 @@ namespace Garage
 {
     public abstract class Application(string name)
     {
+        public ConsoleColor LogColor = ConsoleColor.Cyan;
         public string Name { get; } = name;
+        public string LogName { get; private init; } = name.ToUpper().Replace(' ', '_');
         public ApplicationStatus Status { get; private set; } = new(1);
 
         public Exception? Exception { get; private set; }
