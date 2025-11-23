@@ -7,25 +7,18 @@ using System.Threading.Tasks;
 
 namespace Garage.UI
 {
-    public class ConsoleMenu : IRender
+    public class ConsoleMenu(string name, string description, MenuList<MenuListItem> menuListItems, string selectionPrompt) : IRender
     {
-        public string Name { get; private set; }
-        public string Description { get; private set; }
+        public string Name { get; private set; } = name;
+        public string Description { get; private set; } = description;
+        public MenuSelection? PreviousSelection { get; private set; } = null;
         public MenuSelection? Selection { get; private set; } = null;
         public Exception? MenuException { get; private set; } = null;
-        private readonly MenuList<MenuListItem> _menuListItems;
+        private readonly MenuList<MenuListItem> _menuListItems = menuListItems;
+        private readonly string _selectionPrompt = selectionPrompt;
+        private readonly string _availableMenuOptionsMessage = BuildAvailableOptionsMessage(menuListItems);
 
-        private readonly string _availableMenuOptionsMessage = "This menu has no available options.";
-
-        public ConsoleMenu(string name, string description, MenuList<MenuListItem> menuListItems)
-        {
-            Name = name;
-            Description = description;
-            _menuListItems = menuListItems;
-            _availableMenuOptionsMessage = BuildAvailableOptionsMessage(menuListItems);
-        }
-
-        public void Render() {
+        public void Render(ConsoleKeyInfo? nextKey) {
             do
             {
                 ConsoleUI.Clear();
@@ -42,38 +35,55 @@ namespace Garage.UI
                 }
 
                 try
-                {
-                    var selectionInput = ConsoleUI.GetSelectionFromReadKey();
+                {   
+                    
+                    var selectionInput = ConsoleUI.GetSelectionFromReadKey(_selectionPrompt);
                     MenuException = null;
-                    Selection = TryGetMenuSelectionFromConsoleKeyInfo(selectionInput, out int option);
-                    if (Selection.Item == null)
+                    
+                    if (_menuListItems.Count > 0)
                     {
-                        throw new Exception($"'{Selection.Option}' is not an available option. {_availableMenuOptionsMessage}");
+                        Selection = TryGetMenuSelectionFromConsoleKeyInfo(selectionInput);
+                        if (Selection.Option == 0)
+                        {
+                            break;
+                        }
+
+                         if (Selection.Option > _menuListItems.Count)
+                        {
+                            throw new Exception($"'{Selection.Option}' is not an available option. {_availableMenuOptionsMessage}");
+                        }
+
+                        var selectedItem = _menuListItems.FirstOrDefault(item => item.Option == Selection.Option);
+                        selectedItem?.SubMenu?.Render(selectionInput);
                     }
+
+                    // If the current menu has no children...
+                    if (_menuListItems.Count == 0)
+                        // Go back to previous screen
+                        Selection = new(0);
                 }
                 catch (Exception ex) {
                     MenuException = new Exception($"Error in '{Name}':\n{ex.Message}");
                     Selection = null;
                 }
-                Selection?.Item?.Render();
-                
+
+                if (Selection?.Option > 0)
+                    Selection = null;
             } while (Selection == null);
         }
 
-        private MenuSelection TryGetMenuSelectionFromConsoleKeyInfo(ConsoleKeyInfo selectionInput, out int option)
+        private MenuSelection TryGetMenuSelectionFromConsoleKeyInfo(ConsoleKeyInfo selectionInput)
         {
-            if (selectionInput.Key == ConsoleKey.Q)
+            if (selectionInput.Key == ConsoleKey.Escape)
             {
-                option = 0;
                 return new MenuSelection(0);
             }
 
             var inputChar = selectionInput.KeyChar;
-            if (!int.TryParse(inputChar.ToString(), out int intOption))
+            if (!int.TryParse(inputChar.ToString(), out int option))
                 throw new Exception($"'{inputChar}' is not an available option. Please use a number to make a selection from the list.");
 
-            option = intOption;
-            var found = _menuListItems.FirstOrDefault(item => item.Option == intOption);
+            var found = _menuListItems.FirstOrDefault(item => item.Option == option);
             if (found == null)
                 return new MenuSelection(option);
             return new MenuSelection(option, found);
@@ -118,7 +128,6 @@ namespace Garage.UI
             Option = option;
             Item = null;
         }
-        
     }
 
 }

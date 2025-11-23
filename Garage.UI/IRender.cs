@@ -2,6 +2,6 @@
 {
     internal interface IRender
     {
-        public void Render();
+        public void Render(ConsoleKeyInfo? nextKeyInfo);
     }
 }

@@ -14,6 +14,7 @@ namespace Garage
             * GarageApplication garageApp = new(config);
             * AddApplication(garageApp);
             */
+            // Todo: GarageConsoleUIApplication?
             GarageUIApplication client = new("Garage UI client application");
             GarageApplication client2 = new("Garage backend application");
             Add(client);

@@ -12,10 +12,10 @@ namespace Garage.UI
     }
     public static class ConsoleUI
     {
-        public static ConsoleKeyInfo GetSelectionFromReadKey()
+        public static ConsoleKeyInfo GetSelectionFromReadKey(string message)
         {
             Console.CursorVisible = false;
-            WriteLineInfo($"\nSelect an option from the menu");
+            WriteLineInfo(message);
             var key = Console.ReadKey(intercept: true);
             Console.CursorVisible = true;
             return key;

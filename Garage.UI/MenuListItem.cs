@@ -19,7 +19,8 @@
             SubMenu = null;
         }
 
-        public void Render()
+        // ToDo: refine Render method
+        public void Render(ConsoleKeyInfo? _ = null)
         {
             ConsoleUI.WriteLine($"{Option}. {Name}");
         }
