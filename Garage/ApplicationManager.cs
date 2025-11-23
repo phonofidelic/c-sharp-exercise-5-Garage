@@ -47,7 +47,6 @@ namespace Garage
                 }
                 catch (Exception ex) {
                     // Unhandled exception
-
                     app.LogException(new Exception($"Uncaught exception occurred in '{app.Name}':\n\n'{ex.Message}'\n\n{ex.StackTrace}"));
                     status = new(-1);
                 } 

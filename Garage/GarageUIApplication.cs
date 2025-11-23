@@ -1,11 +1,8 @@
 ﻿using Garage.UI;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Formats.Asn1;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace Garage
 {
@@ -58,11 +55,13 @@ namespace Garage
         {
             ConsoleUI.Clear();
             ConsoleUI.WriteLine($"\nAre you sure you want to quit {Name}?");
-            ConsoleUI.WriteLine("\n\nPress 'Y' to confirm, any other key to cancel");
+            ConsoleUI.Write("\n\n\tPress ");
+            ConsoleUI.WriteColor("\"Y\" to confirm", ConsoleColor.Green);
+            ConsoleUI.Write(", any other key to ");
+            ConsoleUI.WriteColor("cancel", ConsoleColor.Red);
             nextKeyInfo = answer();
             return nextKeyInfo.Key == ConsoleKey.Y;
         }
-        
     }
 
     internal class MainMenu(MenuList<MenuListItem> menuListItems): ConsoleMenu(
