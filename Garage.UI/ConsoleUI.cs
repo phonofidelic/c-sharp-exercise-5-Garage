@@ -1,12 +1,24 @@
 ﻿
 namespace Garage.UI
 {
+    public class ConsoleUIMessages
+    {
+        private Queue<Action> _messages = [];
+
+        // ToDo: Limit how many messages can be in the queue at once?
+        // Queue<Message> MessageBuffer ?
+        public void Add(Action message) => _messages.Enqueue(message);
+        public void PrintNext() => _messages.Dequeue()();
+    }
     public static class ConsoleUI
     {
         public static ConsoleKeyInfo GetSelectionFromReadKey()
         {
+            Console.CursorVisible = false;
             WriteLineInfo($"\nSelect an option from the menu");
-            return Console.ReadKey(intercept: true);
+            var key = Console.ReadKey(intercept: true);
+            Console.CursorVisible = true;
+            return key;
         }
         public static void Continue()
         {
