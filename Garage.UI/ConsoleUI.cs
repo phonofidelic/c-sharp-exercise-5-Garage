@@ -15,7 +15,7 @@ namespace Garage.UI
         public static ConsoleKeyInfo GetSelectionFromReadKey(string message)
         {
             Console.CursorVisible = false;
-            WriteLineInfo(message);
+            WriteLineInfo($"\n{message}");
             var key = Console.ReadKey(intercept: true);
             Console.CursorVisible = true;
             return key;

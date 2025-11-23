@@ -1,6 +1,6 @@
 ﻿namespace Garage.UI
 {
-    internal interface IRender
+    public interface IRender
     {
         public void Render(ConsoleKeyInfo? nextKeyInfo);
     }

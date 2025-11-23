@@ -7,72 +7,72 @@ using System.Threading.Tasks;
 
 namespace Garage.UI
 {
-    public class ConsoleMenu(string name, string description, MenuList<MenuListItem> menuListItems, string selectionPrompt) : IRender
+    public abstract class ConsoleMenu(string name, string description, MenuList<MenuListItem> menuListItems, string selectionPrompt) : IRender
     {
         public string Name { get; private set; } = name;
         public string Description { get; private set; } = description;
-        public MenuSelection? PreviousSelection { get; private set; } = null;
-        public MenuSelection? Selection { get; private set; } = null;
-        public Exception? MenuException { get; private set; } = null;
-        private readonly MenuList<MenuListItem> _menuListItems = menuListItems;
-        private readonly string _selectionPrompt = selectionPrompt;
-        private readonly string _availableMenuOptionsMessage = BuildAvailableOptionsMessage(menuListItems);
+        public MenuSelection? PreviousSelection { get; protected set; } = null;
+        public MenuSelection? Selection { get; protected set; } = null;
+        public Exception? MenuException { get; protected set; } = null;
+        protected readonly MenuList<MenuListItem> _menuListItems = menuListItems;
+        protected readonly string _selectionPrompt = selectionPrompt;
+        protected readonly string _availableMenuOptionsMessage = BuildAvailableOptionsMessage(menuListItems);
 
-        public void Render(ConsoleKeyInfo? nextKey) {
-            do
+        public virtual void Render(ConsoleKeyInfo? nextKey) {
+        do
+        {
+            ConsoleUI.Clear();
+            ConsoleUI.WriteLine($"{Name}\n\n");
+            ConsoleUI.WriteLine($"{Description}\n");
+            foreach (var item in _menuListItems)
             {
-                ConsoleUI.Clear();
-                ConsoleUI.WriteLine($"{Name}\n\n");
-                ConsoleUI.WriteLine($"{Description}\n");
-                foreach (var item in _menuListItems)
-                {
-                    item.Render();
-                }
+                item.Render();
+            }
 
-                if (MenuException != null)
-                {
-                    ConsoleUI.WriteException(MenuException.Message);
-                }
+            if (MenuException != null)
+            {
+                ConsoleUI.WriteException(MenuException.Message);
+            }
 
-                try
-                {   
-                    
-                    var selectionInput = ConsoleUI.GetSelectionFromReadKey(_selectionPrompt);
-                    MenuException = null;
-                    
-                    if (_menuListItems.Count > 0)
+            try
+            {   
+                
+                var selectionInput = ConsoleUI.GetSelectionFromReadKey(_selectionPrompt);
+                MenuException = null;
+                
+                if (_menuListItems.Count > 0)
+                {
+                    Selection = TryGetMenuSelectionFromConsoleKeyInfo(selectionInput);
+                    if (Selection.Option == 0)
                     {
-                        Selection = TryGetMenuSelectionFromConsoleKeyInfo(selectionInput);
-                        if (Selection.Option == 0)
-                        {
-                            break;
-                        }
-
-                         if (Selection.Option > _menuListItems.Count)
-                        {
-                            throw new Exception($"'{Selection.Option}' is not an available option. {_availableMenuOptionsMessage}");
-                        }
-
-                        var selectedItem = _menuListItems.FirstOrDefault(item => item.Option == Selection.Option);
-                        selectedItem?.SubMenu?.Render(selectionInput);
+                        break;
                     }
 
-                    // If the current menu has no children...
-                    if (_menuListItems.Count == 0)
-                        // Go back to previous screen
-                        Selection = new(0);
-                }
-                catch (Exception ex) {
-                    MenuException = new Exception($"Error in '{Name}':\n{ex.Message}");
-                    Selection = null;
+                        if (Selection.Option > _menuListItems.Count)
+                    {
+                        throw new Exception($"'{Selection.Option}' is not an available option. {_availableMenuOptionsMessage}");
+                    }
+
+                    var selectedItem = _menuListItems.FirstOrDefault(item => item.Option == Selection.Option);
+                    selectedItem?.SubMenu?.Render(selectionInput);
                 }
 
-                if (Selection?.Option > 0)
-                    Selection = null;
-            } while (Selection == null);
-        }
+                // If the current menu has no children...
+                if (_menuListItems.Count == 0)
+                    // Go back to previous screen
+                    Selection = new(0);
+            }
+            catch (Exception ex) {
+                MenuException = new Exception($"Error in '{Name}':\n{ex.Message}");
+                Selection = null;
+            }
 
-        private MenuSelection TryGetMenuSelectionFromConsoleKeyInfo(ConsoleKeyInfo selectionInput)
+            if (Selection?.Option > 0)
+                Selection = null;
+        } while (Selection == null);
+    }
+           
+        protected MenuSelection TryGetMenuSelectionFromConsoleKeyInfo(ConsoleKeyInfo selectionInput)
         {
             if (selectionInput.Key == ConsoleKey.Escape)
             {
@@ -89,7 +89,7 @@ namespace Garage.UI
             return new MenuSelection(option, found);
         }
 
-        private static string BuildAvailableOptionsMessage(MenuList<MenuListItem> menuListItems)
+        protected static string BuildAvailableOptionsMessage(MenuList<MenuListItem> menuListItems)
         {
             if (menuListItems.Count < 1) return "";
             string firstOption = $"'{menuListItems.ToArray()[0].Option}'";
@@ -129,5 +129,4 @@ namespace Garage.UI
             Item = null;
         }
     }
-
 }

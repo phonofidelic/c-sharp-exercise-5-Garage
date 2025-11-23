@@ -14,46 +14,26 @@ namespace Garage
         public override ApplicationStatus Run()
         {
             bool exitApplication = false;
-            MenuList<MenuListItem> options =
+            MenuList<MenuListItem> mainMenuItems =
             [
                 new(
                     name: "List vehicles", 
                     option: 1, 
-                    subMenu: new(
-                        name: "Parked Vehicles", 
-                        description: "Showing all vehicles currently parked in the garage:", 
-                        [new("Vehicle ABC-123 (car)", 1), new("Vehicle DEF-456 (bus)", 2), new("Vehicle GHI-789 (bike)", 3) ], 
-                        selectionPrompt: "Press 'Esc' to go back."
-                    )
+                    subMenu: new ListVehiclesMenu()
                 ),
                 new(
                     name: "Park a vehicle", 
                     option: 2, 
-                    subMenu: new(
-                        name: "Enter vehicle details", 
-                        description: "", 
-                        [ new("Enter VIN:", 1), new("Enter vehicle type:", 2) ],
-                    selectionPrompt: "\nSelect an option from the menu"
-                    )
+                    subMenu: new ParkNewVehicleMenu()
                 ),
                 new(
                     name: "Remove a vehicle", 
                     option: 3, 
-                    subMenu: new(
-                        name: "Remove vehicle", 
-                        description: "Select a vehicle to remove from the garage:", 
-                        [new("Vehicle ABC-123 (car)", 1), new("Vehicle DEF-456 (bus)", 2), new("Vehicle GHI-789 (bike)", 3) ], 
-                        selectionPrompt: "Press 'Esc' to go back."
-                    )
+                    subMenu: new RemoveVehicleMenu()
                 ),
             ];
 
-            ConsoleMenu mainMenu = new(
-                name: "Main menu",
-                description: "Use the menu to make a selection:",
-                options,
-                selectionPrompt: "\nSelect an option from the menu. Press 'Esc.' to quit the application"
-                );
+            MainMenu mainMenu = new( menuListItems: mainMenuItems );
 
             ConsoleKeyInfo? nextKey = null;
 
@@ -84,4 +64,32 @@ namespace Garage
         }
         
     }
+
+    internal class MainMenu(MenuList<MenuListItem> menuListItems): ConsoleMenu(
+        name: "Main menu",
+        description: "Use the menu to make a selection:",
+        menuListItems,
+        selectionPrompt: "Select an option from the menu. \nPress 'Esc.' to quit the application"
+    ) {}
+
+    internal class ListVehiclesMenu(): ConsoleMenu(
+        name: "Parked Vehicles", 
+        description: "Showing all vehicles currently parked in the garage:", 
+        menuListItems: [new("Vehicle ABC-123 (car)", 1), new("Vehicle DEF-456 (bus)", 2), new("Vehicle GHI-789 (bike)", 3) ], 
+        selectionPrompt: "Press 'Esc' to go back."
+    ) {}
+
+    internal class ParkNewVehicleMenu(): ConsoleMenu(
+        name: "Enter vehicle details", 
+        description: "", 
+        [ new("Enter VIN:", 1), new("Enter vehicle type:", 2) ],
+        selectionPrompt: "Select an option from the menu"
+    ) {}
+
+    internal class RemoveVehicleMenu(): ConsoleMenu(
+        name: "Remove vehicle", 
+        description: "Select a vehicle to remove from the garage:", 
+        [new("Vehicle ABC-123 (car)", 1), new("Vehicle DEF-456 (bus)", 2), new("Vehicle GHI-789 (bike)", 3) ], 
+        selectionPrompt: "Press 'Esc' to go back."
+    ) {}
 }
