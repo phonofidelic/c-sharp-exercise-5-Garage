@@ -7,4 +7,9 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Garage.Library\Garage.Library.csproj" />
+    <ProjectReference Include="..\Garage.UI\Garage.UI.csproj" />
+  </ItemGroup>
+
 </Project>
