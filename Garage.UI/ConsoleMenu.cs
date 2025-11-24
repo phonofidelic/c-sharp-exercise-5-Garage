@@ -1,17 +1,24 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace Garage.UI
 {
-    public abstract class ConsoleMenu(string name, string description, MenuList<MenuListItem> menuListItems, string selectionPrompt) : IRender
+    public abstract class ConsoleMenu
+    (
+        string name, 
+        string description, 
+        MenuList<MenuListItem> menuListItems, 
+        string selectionPrompt
+    ) : IRender
     {
         public string Name { get; private set; } = name;
         public string Description { get; private set; } = description;
-        public MenuSelection? PreviousSelection { get; protected set; } = null;
+        // public MenuSelection<TOption>? PreviousSelection { get; protected set; } = null;
         public MenuSelection? Selection { get; protected set; } = null;
         public Exception? MenuException { get; protected set; } = null;
         protected readonly MenuList<MenuListItem> _menuListItems = menuListItems;
@@ -43,24 +50,22 @@ namespace Garage.UI
                 if (_menuListItems.Count > 0)
                 {
                     Selection = TryGetMenuSelectionFromConsoleKeyInfo(selectionInput);
-                    if (Selection.Option == 0)
+                    if (Selection.Option.Equals(0))
                     {
                         break;
                     }
 
-                        if (Selection.Option > _menuListItems.Count)
-                    {
+                    var selectedItem = _menuListItems
+                    .FirstOrDefault(item => item.Option.Equals(Selection.Option)) ?? 
                         throw new Exception($"'{Selection.Option}' is not an available option. {_availableMenuOptionsMessage}");
-                    }
-
-                    var selectedItem = _menuListItems.FirstOrDefault(item => item.Option == Selection.Option);
+                    
                     selectedItem?.SubMenu?.Render(selectionInput);
                 }
 
                 // If the current menu has no children...
                 if (_menuListItems.Count == 0)
                     // Go back to previous screen
-                    Selection = new(0);
+                    Selection = new MenuSelection(0);
             }
             catch (Exception ex) {
                 MenuException = new Exception($"Error in '{Name}':\n{ex.Message}");
@@ -83,7 +88,7 @@ namespace Garage.UI
             if (!int.TryParse(inputChar.ToString(), out int option))
                 throw new Exception($"'{inputChar}' is not an available option. Please use a number to make a selection from the list.");
 
-            var found = _menuListItems.FirstOrDefault(item => item.Option == option);
+            var found = _menuListItems.FirstOrDefault(item => item.Option.Equals(option));
             if (found == null)
                 return new MenuSelection(option);
             return new MenuSelection(option, found);
@@ -92,9 +97,9 @@ namespace Garage.UI
         protected static string BuildAvailableOptionsMessage(MenuList<MenuListItem> menuListItems)
         {
             if (menuListItems.Count < 1) return "";
-            string firstOption = $"'{menuListItems.ToArray()[0].Option}'";
-            string additionalOptions = "";
-            string availableOptions = "";
+            string firstOptionString = $"'{menuListItems.ToArray()[0].Option}'";
+            string additionalOptionsString = "";
+            string availableOptionsString = "";
             foreach ((int availableOption, int index) in menuListItems.Select((item, index) => (item.Option, index)))
             {
                 if (menuListItems.Count > 1)
@@ -102,31 +107,15 @@ namespace Garage.UI
                     if (index > 0)
                     {
                         string separator = index + 1 == menuListItems.Count ? " and " : ", ";
-                        additionalOptions += $"{separator}'{availableOption}'";
+                        additionalOptionsString += $"{separator}'{availableOption}'";
                     }
-                    availableOptions = $"Available options are {firstOption}{additionalOptions}.";
+                    availableOptionsString = $"Available options are {firstOptionString}{additionalOptionsString}.";
                 } else
                 {
-                    availableOptions = $"The only available option is '1'.";
+                    availableOptionsString = $"The only available option is '1'.";
                 }
             }
-            return availableOptions;
-        }
-    }
-
-    public class MenuSelection
-    {
-        public int Option { get; private init; }
-        public MenuListItem? Item { get; private init; }
-        public MenuSelection(int option, MenuListItem item)
-        {
-            Option = option;
-            Item = item;
-        }
-        public MenuSelection(int option)
-        {
-            Option = option;
-            Item = null;
+            return availableOptionsString;
         }
     }
 }

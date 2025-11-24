@@ -5,14 +5,14 @@
         public string Name { get; private set; }
         public int Option { get; private set; }
 
-        public ConsoleMenu? SubMenu { get; private set; }
-        public MenuListItem(string name, int option, ConsoleMenu subMenu)
+        public IRender? SubMenu { get; private set; }
+        public MenuListItem(int option, string name, IRender subMenu)
         {
             Name = name;
             Option = option;
             SubMenu = subMenu;
         }
-        public MenuListItem(string name, int option)
+        public MenuListItem(int option, string name)
         {
             Name = name;
             Option = option;
