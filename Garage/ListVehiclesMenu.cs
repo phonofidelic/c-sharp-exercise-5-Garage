@@ -7,7 +7,7 @@ internal class ListVehiclesMenu(): ConsoleMenu
 (
     name: "Parked Vehicles", 
     description: "Showing all vehicles currently parked in the garage:", 
-    menuListItems: 
+    menuListDtoItems: 
     [
         new("Vehicle ABC-123 (car)"), 
         new("Vehicle DEF-456 (bus)"), 

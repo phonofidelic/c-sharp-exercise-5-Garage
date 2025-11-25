@@ -13,7 +13,6 @@ namespace Garage.UI
     {
         public string Name { get; private set; }
         public string Description { get; private set; }
-        // public MenuSelection<TOption>? PreviousSelection { get; protected set; } = null;
         public MenuSelection? Selection { get; protected set; } = null;
         public Exception? MenuException { get; protected set; } = null;
         protected readonly MenuList _menuListItems;
@@ -23,17 +22,15 @@ namespace Garage.UI
         public ConsoleMenu(
         string name, 
         string description, 
-        IEnumerable<MenuItemDTO> menuListItems, 
+        IEnumerable<MenuItemDTO> menuListDtoItems, 
         string selectionPrompt
         )
         {
             Name = name;
             Description = description;
 
-            _menuListItems = new MenuList(menuListItems);
-
+            _menuListItems = new MenuList(menuListDtoItems);
             _selectionPrompt = selectionPrompt;
-            // ToDo: Wait for _menuListItems to be built?
             _availableMenuOptionsMessage = BuildAvailableOptionsMessage(_menuListItems);
         }
         public virtual void Render() {
@@ -123,7 +120,7 @@ namespace Garage.UI
                     availableOptionsString = $"Available options are {firstOptionString}{additionalOptionsString}.";
                 } else
                 {
-                    availableOptionsString = $"The only available option is '1'.";
+                    availableOptionsString = $"The only available option is {firstOptionString}.";
                 }
             }
             return availableOptionsString;
