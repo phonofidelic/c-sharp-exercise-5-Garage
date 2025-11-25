@@ -3,30 +3,34 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Channels;
 
 namespace Garage
 {
-    internal class GarageUIApplication(string name) : Application(name)
+    internal class GarageUIApplication(string name, ChannelWriter<ApplicationMessage> writer) : Application(name, writer)
     {
         public override ApplicationStatus Run()
         {
             bool exitApplication = false;
             
-            MainMenu mainMenu = new();
+            MainMenu mainMenu = new(writer);
 
             do
             {
                 try
                 {
                     mainMenu.Render();
+                    //Writer!.TryWrite(new(1));
                 } catch (Exception ex)
                 {
+                    //Writer!.TryWrite(new(-1, ex));
                     return new ApplicationStatus(-1, ex);
                 }
                 ConsoleUI.WriteLineInfo("Press 'Esc.' to quit the application");
                 exitApplication = ConfirmExit(() => ConsoleUI.ReadKey(intercept: true), out _);
             } while(!exitApplication);
 
+            //Writer!.TryWrite(new(0));
             return new ApplicationStatus(0);
         }
 

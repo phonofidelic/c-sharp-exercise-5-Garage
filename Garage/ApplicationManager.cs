@@ -1,12 +1,14 @@
 ﻿using Garage.UI;
+using System.Threading.Channels;
 
 namespace Garage
 {
     internal class ApplicationManager()
     {
         private List<Application> _applications = [];
+        public ApplicationMessage? CurrentMessage { get; set; } = null;
 
-        public void Start()
+        async public void Start(Channel<ApplicationMessage> channel)
         {
             // Create application instances to run with the manager
             /* TodDo:
@@ -15,21 +17,51 @@ namespace Garage
             * AddApplication(garageApp);
             */
             // Todo: GarageConsoleUIApplication?
-            GarageUIApplication client = new("Garage UI client application");
-            GarageApplication client2 = new("Garage backend application");
-            Add(client);
-            client2.LogColor = ConsoleColor.DarkMagenta;
-            Add(client2);
+            //GarageUIApplication client = new("Garage UI client application", channel.Writer);
+            //GarageApplication client2 = new("Garage backend application", channel.Reader);
+            //Add(client);
+            //client2.LogColor = ConsoleColor.DarkMagenta;
+            //Add(client2);
 
             // ToDo: Learn how to run multiple apps in parallel
-            foreach (Application app in _applications)
+            //foreach (Application app in _applications)
+            //{
+            //    try
+            //    {
+            //        Run(app);
+            //    } catch (Exception ex)
+            //    {
+            //        LogException(ex);
+            //    }
+            //}
+            await ConsumeAsync(channel.Reader);
+        }
+
+        //public async ValueTask ProduceAsync(ChannelWriter<ApplicationMessage> writer, Application app)
+        //{
+        //    while (await writer.WaitToWriteAsync())
+        //    {
+        //        if (Status == null) Status = new(1);
+        //        ApplicationStatus tempStatus = app.Run();
+
+        //        if (writer.TryWrite(item: tempStatus))
+        //        {
+        //            Status = tempStatus;
+        //        }
+
+        //        await Task.Delay(TimeSpan.FromMilliseconds(10));
+        //    }
+        //    writer.Complete();
+        //}
+
+        public async ValueTask ConsumeAsync(ChannelReader<ApplicationMessage> reader)
+        {
+            while (await reader.WaitToReadAsync())
             {
-                try
+                while (reader.TryRead(out ApplicationMessage newMessage))
                 {
-                    Run(app);
-                } catch (Exception ex)
-                {
-                    LogException(ex);
+                    Console.WriteLine($"NEW MESSAGE: {newMessage}");
+                    CurrentMessage = newMessage;
                 }
             }
         }

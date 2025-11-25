@@ -1,6 +1,8 @@
+using Garage.Library;
+using Garage.UI;
 using System;
 using System.Reflection.Metadata.Ecma335;
-using Garage.UI;
+using System.Threading.Channels;
 
 namespace Garage;
 
@@ -8,7 +10,8 @@ namespace Garage;
 internal class MainMenu: ConsoleMenu
 
 {
-    public MainMenu()
+    ChannelWriter<ApplicationMessage> Writer;
+    public MainMenu(ChannelWriter<ApplicationMessage> writer)
     : base(
     name: "Main menu",
     description: "Use the menu to make a selection:",
@@ -30,6 +33,17 @@ internal class MainMenu: ConsoleMenu
             )
         ],
     selectionPrompt: "Select an option from the menu. \nPress 'Esc.' to quit the application"
-)
-    {}
+    )
+    {
+        Writer = writer;
+    }
+}
+
+internal class NewGarage(): IRender
+{
+    public void Render(RenderCallback<ApplicationMessage> action)
+    {
+        ApplicationMessage message = new("CREATE_NEW_GARAGE");
+        action(message);
+    }
 }
