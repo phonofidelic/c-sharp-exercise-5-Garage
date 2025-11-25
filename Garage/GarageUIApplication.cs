@@ -11,27 +11,8 @@ namespace Garage
         public override ApplicationStatus Run()
         {
             bool exitApplication = false;
-            MenuList<MenuListItem> mainMenuItems =
-            [
-                new(
-                    option: 1, 
-                    name: "List parked vehicles", 
-                    subMenu: new ListVehiclesMenu()
-                ),
-                new(
-                    option: 2, 
-                    name: "Park a new vehicle", 
-                    subMenu: new ParkNewVehicleMenu()
-                ),
-                new(
-                    option: 3, 
-                    name: "Remove a parked vehicle", 
-                    subMenu: new RemoveVehicleMenu()
-                ),
-            ];
-
             
-            MainMenu mainMenu = new( menuListItems: mainMenuItems );
+            MainMenu mainMenu = new();
 
             ConsoleKeyInfo? nextKey = null;
 
@@ -63,49 +44,5 @@ namespace Garage
             nextKeyInfo = answer();
             return nextKeyInfo.Key == ConsoleKey.Y;
         }
-    }
-
-    internal class MainMenu(MenuList<MenuListItem> menuListItems): ConsoleMenu
-    (
-        name: "Main menu",
-        description: "Use the menu to make a selection:",
-        menuListItems,
-        selectionPrompt: "Select an option from the menu. \nPress 'Esc.' to quit the application"
-    ) {}
-
-    internal class ListVehiclesMenu(): ConsoleMenu
-    (
-        name: "Parked Vehicles", 
-        description: "Showing all vehicles currently parked in the garage:", 
-        menuListItems: 
-        [
-            new(1, "Vehicle ABC-123 (car)"), 
-            new(2, "Vehicle DEF-456 (bus)"), 
-            new(3, "Vehicle GHI-789 (bike)") 
-        ], 
-        selectionPrompt: "Press 'Esc.' to go back"
-    ) {}
-
-    internal class ParkNewVehicleMenu(): ConsoleMenu
-    (
-        name: "Enter vehicle details", 
-        description: "", 
-        [ 
-            new(1, "Enter VIN:"), 
-            new(2, "Enter vehicle type:") 
-        ],
-        selectionPrompt: "Select an option from the menu.\nPress 'Esc.' to go back"
-    ) {}
-
-    internal class RemoveVehicleMenu(): ConsoleMenu
-    (
-        name: "Remove vehicle", 
-        description: "Select a vehicle to remove from the garage:", 
-        [
-            new(1, "Vehicle ABC-123 (car)"), 
-            new(2, "Vehicle DEF-456 (bus)"), 
-            new(3, "Vehicle GHI-789 (bike)") 
-        ], 
-        selectionPrompt: "Select an option from the menu.\nPress 'Esc.' to go back"
-    ) {}
+    }   
 }
