@@ -7,10 +7,26 @@ using System.Threading.Tasks;
 
 namespace Garage.UI
 {
-    public class MenuList<T> : IEnumerable<T>
+    public class MenuItemDTO
+{
+    public string Name { get; private set; }
+    public IRender? Children { get; private set; }
+
+    public MenuItemDTO(string name, IRender children)
+    {
+        Name = name;
+        Children = children;
+    }
+    public MenuItemDTO(string name)
+    {
+        Name = name;
+        Children = null;
+    }
+}
+    public class MenuList : IEnumerable<MenuListItem>
     {
         public int Count { get; private set; } = 0;        
-        private readonly List<T> _list;
+        private readonly List<MenuListItem> _list;
 
 
         public MenuList()
@@ -18,15 +34,27 @@ namespace Garage.UI
             _list = [];
         }
 
-        public void Add(T item)
+        public MenuList(IEnumerable<MenuItemDTO> items)
         {
-            Count++;
-            _list.Add(item);
+            _list = [];
+            foreach(MenuItemDTO item in items)
+            {
+                Add(item);
+            }
         }
 
-        public IEnumerator<T> GetEnumerator()
+        public void Add(MenuItemDTO item)
         {
-            foreach (T item in _list)
+            Count++;
+            if (item.Children != null) 
+                _list.Add(new MenuListItem(Count, item.Name, item.Children));
+            else
+                _list.Add(new MenuListItem(Count, item.Name));
+        }
+
+        public IEnumerator<MenuListItem> GetEnumerator()
+        {
+            foreach (MenuListItem item in _list)
             {
                 yield return item;
             }

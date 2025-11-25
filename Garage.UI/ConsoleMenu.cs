@@ -8,24 +8,35 @@ using System.Threading.Tasks;
 
 namespace Garage.UI
 {
-    public abstract class ConsoleMenu
-    (
-        string name, 
-        string description, 
-        MenuList<MenuListItem> menuListItems, 
-        string selectionPrompt
-    ) : IRender
+    public abstract class ConsoleMenu : IRender
+    
     {
-        public string Name { get; private set; } = name;
-        public string Description { get; private set; } = description;
+        public string Name { get; private set; }
+        public string Description { get; private set; }
         // public MenuSelection<TOption>? PreviousSelection { get; protected set; } = null;
         public MenuSelection? Selection { get; protected set; } = null;
         public Exception? MenuException { get; protected set; } = null;
-        protected readonly MenuList<MenuListItem> _menuListItems = menuListItems;
-        protected readonly string _selectionPrompt = selectionPrompt;
-        protected readonly string _availableMenuOptionsMessage = BuildAvailableOptionsMessage(menuListItems);
+        protected readonly MenuList _menuListItems;
+        protected readonly string _selectionPrompt;
+        protected readonly string _availableMenuOptionsMessage;
 
-        public virtual void Render(ConsoleKeyInfo? nextKey) {
+        public ConsoleMenu(
+        string name, 
+        string description, 
+        IEnumerable<MenuItemDTO> menuListItems, 
+        string selectionPrompt
+        )
+        {
+            Name = name;
+            Description = description;
+
+            _menuListItems = new MenuList(menuListItems);
+
+            _selectionPrompt = selectionPrompt;
+            // ToDo: Wait for _menuListItems to be built?
+            _availableMenuOptionsMessage = BuildAvailableOptionsMessage(_menuListItems);
+        }
+        public virtual void Render() {
         do
         {
             ConsoleUI.Clear();
@@ -59,7 +70,7 @@ namespace Garage.UI
                     .FirstOrDefault(item => item.Option.Equals(Selection.Option)) ?? 
                         throw new Exception($"'{Selection.Option}' is not an available option. {_availableMenuOptionsMessage}");
                     
-                    selectedItem?.SubMenu?.Render(selectionInput);
+                    selectedItem?.Children?.Render();
                 }
 
                 // If the current menu has no children...
@@ -94,7 +105,7 @@ namespace Garage.UI
             return new MenuSelection(option, found);
         }
 
-        protected static string BuildAvailableOptionsMessage(MenuList<MenuListItem> menuListItems)
+        protected static string BuildAvailableOptionsMessage(MenuList menuListItems)
         {
             if (menuListItems.Count < 1) return "";
             string firstOptionString = $"'{menuListItems.ToArray()[0].Option}'";

@@ -76,7 +76,6 @@ namespace Garage
             Console.ForegroundColor = ConsoleColor.Red;
             ConsoleUI.WriteLine($" {exception.Message}");
             Console.ResetColor();
-
         }
     }
 

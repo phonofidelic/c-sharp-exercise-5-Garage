@@ -14,20 +14,17 @@ namespace Garage
             
             MainMenu mainMenu = new();
 
-            ConsoleKeyInfo? nextKey = null;
-
             do
             {
                 try
                 {
-                    mainMenu.Render(nextKey);
+                    mainMenu.Render();
                 } catch (Exception ex)
                 {
                     return new ApplicationStatus(-1, ex);
                 }
                 ConsoleUI.WriteLineInfo("Press 'Esc.' to quit the application");
-                exitApplication = ConfirmExit(() => ConsoleUI.ReadKey(intercept: true), out ConsoleKeyInfo nextKeyInfo);
-                nextKey = nextKeyInfo;
+                exitApplication = ConfirmExit(() => ConsoleUI.ReadKey(intercept: true), out _);
             } while(!exitApplication);
 
             return new ApplicationStatus(0);
