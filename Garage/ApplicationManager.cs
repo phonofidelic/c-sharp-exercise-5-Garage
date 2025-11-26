@@ -24,16 +24,17 @@ namespace Garage
             //Add(client2);
 
             // ToDo: Learn how to run multiple apps in parallel
-            //foreach (Application app in _applications)
-            //{
-            //    try
-            //    {
-            //        Run(app);
-            //    } catch (Exception ex)
-            //    {
-            //        LogException(ex);
-            //    }
-            //}
+            foreach (Application app in _applications)
+            {
+                try
+                {
+                    Run(app);
+                }
+                catch (Exception ex)
+                {
+                    LogException(ex);
+                }
+            }
             await ConsumeAsync(channel.Reader);
         }
 

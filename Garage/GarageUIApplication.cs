@@ -7,30 +7,28 @@ using System.Threading.Channels;
 
 namespace Garage
 {
-    internal class GarageUIApplication(string name, ChannelWriter<ApplicationMessage> writer) : Application(name, writer)
+    internal class GarageUIApplication(IEventBus eventBus) 
+        : Application("Garage UI", eventBus)
     {
         public override ApplicationStatus Run()
         {
             bool exitApplication = false;
             
-            MainMenu mainMenu = new(writer);
+            MainMenu mainMenu = new(_eventBus);
 
             do
             {
                 try
                 {
                     mainMenu.Render();
-                    //Writer!.TryWrite(new(1));
                 } catch (Exception ex)
                 {
-                    //Writer!.TryWrite(new(-1, ex));
                     return new ApplicationStatus(-1, ex);
                 }
                 ConsoleUI.WriteLineInfo("Press 'Esc.' to quit the application");
                 exitApplication = ConfirmExit(() => ConsoleUI.ReadKey(intercept: true), out _);
             } while(!exitApplication);
 
-            //Writer!.TryWrite(new(0));
             return new ApplicationStatus(0);
         }
 

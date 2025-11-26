@@ -4,6 +4,7 @@ namespace Garage.Library
 {
     public class Garage<T> : IEnumerable<T> where T : Vehicle
     {
+        public Guid Id { get; init; }
         public int Capacity { get; private set; }
         public int Count { get; private set; }
         private IEnumerable<T> _vehicles;

@@ -7,13 +7,16 @@ using System.Threading.Tasks;
 
 namespace Garage
 {
-    public class GarageApplication(string name, ChannelReader<ApplicationMessage> reader) : Application(name, reader)
+    internal class GarageApplication(IEventBus eventBus) 
+        : Application("Garage", eventBus)
     {
         public override ApplicationStatus Run() {
             do
             {
                 Console.WriteLine("Running Garage app");
-                Console.ReadKey();
+                //Console.ReadKey();
+                //GarageCreateCommandHandler garageCreate = new();
+                //garageCreate.Handle();
                 return new ApplicationStatus(1);
             } while(true);
         }
