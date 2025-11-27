@@ -27,6 +27,7 @@ namespace Garage
             switch (request.Type)
             {
                 case GarageRequestType.GarageCreate:
+                    // ToDo: Handle request
                     Console.WriteLine($"### Processing request: {GarageRequestType.GarageCreate}");
                     //eventBus.PublishAsync()
                     break;
@@ -34,16 +35,6 @@ namespace Garage
                     break;
             }
         }
-
-        //public void ProcessRequest<T>(ApplicationEvent<T> request) where T : Enum
-        //{
-        //    throw new NotImplementedException();
-        //}
-
-        //// public void ProcessRequest(Enum requestType)
-        //// {
-        ////     throw new NotImplementedException();
-        //// }
     }
 
     public enum GarageRequestType

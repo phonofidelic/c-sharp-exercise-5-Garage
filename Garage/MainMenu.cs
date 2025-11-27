@@ -36,16 +36,16 @@ internal class MainMenu(IEventBus eventBus) : ConsoleMenu(
 }
 
 
-
-internal class NewGarage(
-    //IGarageStore store, 
-    IEventBus eventBus) : IRender
+// ToDo: Remove code testing async Render
+internal class NewGarage(IEventBus eventBus) : IRender
 {
-    public async void Render() {
+    public void Render()
+    {
+        _ = RenderAsync();
+    }
+    private async Task RenderAsync()
+    {
         ConsoleUI.WriteLine("NewGarage rendered");
-        //MessageQueue queue = new();
-        //EventBus bus = new(queue);
-        //GarageCreatedApplicationEvent garageCreatedEvent = new(new());
         CancellationToken cancellationToken = new();
         CreateGarageRequestEvent garageCreatedEvent = new(new("My new garage", 50));
         await eventBus.PublishAsync(garageCreatedEvent, cancellationToken);

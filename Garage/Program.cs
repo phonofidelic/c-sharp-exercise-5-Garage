@@ -17,7 +17,6 @@ namespace Garage
                 services.AddSingleton<IEventBus, EventBus>();
                 services.AddHostedService<ApplicationEventProcessorJob>();
                 services.AddSingleton<IUI, GarageUIApplication>();
-                services.AddSingleton<GarageApplication>();
             })
             .UseConsoleLifetime();
 
@@ -26,7 +25,6 @@ namespace Garage
 
             ApplicationManager manager = new();
             manager.Add(host.Services.GetRequiredService<IUI>());
-            manager.Add(host.Services.GetRequiredService<GarageApplication>());
             manager.Add(host.Services.GetRequiredService<IAPI>());
             manager.Start();
 
