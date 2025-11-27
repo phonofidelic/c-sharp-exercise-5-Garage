@@ -13,7 +13,8 @@ internal class MainMenu(IEventBus eventBus) : ConsoleMenu(
     menuListDtoItems: [
                 new(
                     name: "Create new Garage",
-                    children: new CreateNewGarageMenu(eventBus)
+                    //children: new CreateNewGarageMenu(eventBus)
+                    children: new NewGarage(eventBus)
                 ),
                 new(
                     name: "List parked vehicles",

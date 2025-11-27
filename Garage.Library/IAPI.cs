@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 
 namespace Garage.Library
 {
-    public interface IGarageAPI
+    public interface IAPI
     {
         ResponseGarageCreateDTO CreateNewGarage(RequestGarageCreateDTO requestCreate);
-        void ProcessRequest<TEnum>(TEnum requestType) where TEnum : Enum;
+        void ProcessRequest(ApplicationEvent request);
     }
 
-    
+
 }

@@ -11,7 +11,7 @@ namespace Garage
             IHostBuilder builder = Host.CreateDefaultBuilder(args);
             builder.ConfigureServices(services =>
             {
-                services.AddSingleton<IGarageAPI, GarageAPI>();
+                services.AddSingleton<IAPI, GarageAPI>();
                 services.AddSingleton<IGarageStore>(new Store("My Garage"));
                 services.AddSingleton<MessageQueue>();
                 services.AddSingleton<IEventBus, EventBus>();
@@ -23,8 +23,7 @@ namespace Garage
             .UseConsoleLifetime();
 
             IHost host = builder.Build();
-            host.StartAsync();
-
+            Task task = host.StartAsync();
             //host.Services.GetRequiredService<GarageUIApplication>().Run();
             //host.Services.GetRequiredService<GarageApplication>().Run();
             

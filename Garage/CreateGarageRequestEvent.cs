@@ -4,7 +4,7 @@ using System;
 
 namespace Garage
 {
-    internal class CreateGarageRequestEvent : ApplicationEvent<GarageRequestType>
+    internal class CreateGarageRequestEvent : ApplicationEvent
     {
         //public Guid Id { get; init; }
         //public override GarageCreateDTO Payload { get; private set; }
