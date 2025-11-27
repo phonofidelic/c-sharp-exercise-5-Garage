@@ -15,8 +15,11 @@ namespace Garage
                 services.AddSingleton<IGarageStore>(new Store("My Garage"));
                 services.AddSingleton<MessageQueue>();
                 services.AddSingleton<IEventBus, EventBus>();
+                services.AddSingleton<IApplicationRequest, ApplicationRequest>();
                 services.AddHostedService<ApplicationEventProcessorJob>();
                 services.AddSingleton<IUI, GarageUIApplication>();
+                services.AddSingleton<MainMenu>();
+                services.AddSingleton<CreateGarageMenu>();
             })
             .UseConsoleLifetime();
 

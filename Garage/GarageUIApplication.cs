@@ -8,15 +8,13 @@ using Garage.Library;
 
 namespace Garage
 {
-    internal class GarageUIApplication(IEventBus eventBus) 
+    internal class GarageUIApplication(IEventBus eventBus, MainMenu mainMenu) 
         : Application("Garage UI", eventBus), IUI
     {
         public override ApplicationStatus Run()
         {
             bool exitApplication = false;
             
-            MainMenu mainMenu = new(_eventBus);
-
             do
             {
                 try
