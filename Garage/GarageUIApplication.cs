@@ -9,7 +9,7 @@ using Garage.Library;
 namespace Garage
 {
     internal class GarageUIApplication(IEventBus eventBus) 
-        : Application("Garage UI", eventBus)
+        : Application("Garage UI", eventBus), IUI
     {
         public override ApplicationStatus Run()
         {

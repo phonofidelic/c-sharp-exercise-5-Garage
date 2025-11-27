@@ -16,24 +16,20 @@ namespace Garage
                 services.AddSingleton<MessageQueue>();
                 services.AddSingleton<IEventBus, EventBus>();
                 services.AddHostedService<ApplicationEventProcessorJob>();
-                services.AddSingleton<GarageUIApplication>();
+                services.AddSingleton<IUI, GarageUIApplication>();
                 services.AddSingleton<GarageApplication>();
-                //services.AddSingleton<ICreateHandler<Lib.Garage<Lib.Vehicle>>>(new GarageCreateCommandHandler());
             })
             .UseConsoleLifetime();
 
             IHost host = builder.Build();
             Task task = host.StartAsync();
-            //host.Services.GetRequiredService<GarageUIApplication>().Run();
-            //host.Services.GetRequiredService<GarageApplication>().Run();
-            
-            List<Application> apps = [];
-            apps.Add(host.Services.GetRequiredService<GarageUIApplication>());
-            apps.Add(host.Services.GetRequiredService<GarageApplication>());
-            Parallel.ForEach(apps, (app) => app.Run());
 
-            //ApplicationManager applicationManager = new();
-            //applicationManager.Start();
+            ApplicationManager manager = new();
+            manager.Add(host.Services.GetRequiredService<IUI>());
+            manager.Add(host.Services.GetRequiredService<GarageApplication>());
+            manager.Add(host.Services.GetRequiredService<IAPI>());
+            manager.Start();
+
         }
     }
 }

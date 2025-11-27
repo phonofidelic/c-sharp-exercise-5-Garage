@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Garage.Library
 {
-    public interface IAPI
+    public interface IAPI : IApplication
     {
         ResponseGarageCreateDTO CreateNewGarage(RequestGarageCreateDTO requestCreate);
         void ProcessRequest(ApplicationEvent request);
