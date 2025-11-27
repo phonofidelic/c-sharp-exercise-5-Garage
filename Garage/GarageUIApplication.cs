@@ -3,16 +3,19 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Channels;
+using Garage.Library;
 
 namespace Garage
 {
-    internal class GarageUIApplication(string name) : Application(name)
+    internal class GarageUIApplication(IEventBus eventBus) 
+        : Application("Garage UI", eventBus), IUI
     {
         public override ApplicationStatus Run()
         {
             bool exitApplication = false;
             
-            MainMenu mainMenu = new();
+            MainMenu mainMenu = new(_eventBus);
 
             do
             {

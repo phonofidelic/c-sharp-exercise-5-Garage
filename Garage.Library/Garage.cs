@@ -4,39 +4,58 @@ namespace Garage.Library
 {
     public class Garage<T> : IEnumerable<T> where T : Vehicle
     {
+        public Guid Id { get; init; }
         public int Capacity { get; private set; }
         public int Count { get; private set; }
-        private IEnumerable<T> _vehicles;
+        private Array _vehicles;
 
         public Garage(int capacity)
         {
             Capacity = capacity;
-            _vehicles = [];
+            _vehicles = new Vehicle[capacity];
         }
 
-        public int Add(T vehicle)
+        public void Add(T vehicle)
         {
             if (Count < Capacity)
             {
-                _vehicles = [.._vehicles, vehicle];
+                if (_vehicles.GetValue(Count) != null)
+                    throw new Exception($"Index {Count} is not empty");
+
+                _vehicles.SetValue(vehicle, Count);
                 Count++;
                 Capacity--;
-                return 1;
             }
-            return 0;
         }
 
-        public int Remove(T vehicle)
+        public void Remove(T vehicle)
         {
-            var toRemove = _vehicles.FirstOrDefault(v => v.VIN == vehicle.VIN);
-            if (toRemove != null)
+            int vehicleIndex = FindVehicleIndex(vehicle);
+            if (vehicleIndex < 0)
+                throw new Exception($"No item present at index {vehicleIndex}");
+            _vehicles.SetValue(null, vehicleIndex);
+            Count--;
+            Capacity++;
+        }
+
+        private int FindVehicleIndex(Vehicle vehicle)
+        {
+            int index = 0;
+            object? itemAtIndex = null;
+            while(index < Capacity)
             {
-                toRemove = null;
-                Count--;
-                Capacity++;
+                itemAtIndex = _vehicles.GetValue(index);
+                if (itemAtIndex != null && itemAtIndex.Equals(vehicle))
+                {
+                    break;
+                }
+                index++;
+            }
+            if (itemAtIndex == null || !itemAtIndex.Equals(vehicle))
+            {
                 return -1;
             }
-            return 0;
+            return index;
         }
         public IEnumerator<T> GetEnumerator()
         {
