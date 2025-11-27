@@ -1,10 +1,14 @@
 ﻿
 using Garage.Library;
-using System;
 
 namespace Garage
 {
-    internal class CreateGarageRequestEvent(RequestGarageCreateDTO garageCreate) 
-        : ApplicationEvent(GarageRequestType.GarageCreate, garageCreate)
-    {}
+    internal class CreateGarageRequestEvent : ApplicationEvent
+    {
+        public CreateGarageRequestEvent(CreateGarageRequestDTO garageCreate)
+            : base(GarageRequestType.GarageCreate)
+        {
+            Payload = garageCreate;
+        }
+    }
 }

@@ -18,14 +18,15 @@ namespace Garage.Library
                 {
                     logger.LogInformation("Processing message\n\tEvent: {Event}\tId: {Id}\tRecord: {Record}", applicationEvent, applicationEvent.Id, applicationEvent.Payload);
                     // Route request to the appropriate handler?
-                    _api.ProcessRequest(applicationEvent);
+                    ApplicationEvent response = _api.RouteEvent(applicationEvent);
+                    logger.LogInformation("API response payload: {Response}", response.Payload);
                     await Task.Delay(100, stoppingToken);
                 }
                 catch (Exception ex)
                 {
                     logger.LogError(
                         ex,
-                        "Could not publish event with Id {ApplicationEvent}", applicationEvent);
+                        "Could not publish event with Id {ApplicationEvent}", applicationEvent.Id);
                 }
             }
         }
