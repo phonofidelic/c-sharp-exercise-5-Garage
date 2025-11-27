@@ -4,9 +4,9 @@ namespace Garage
     internal class EventBus(MessageQueue queue) : IEventBus
     {
         public async Task PublishAsync<T>(
-            T applicationEvent, 
+            ApplicationEvent<T> applicationEvent, 
             CancellationToken cancellationToken)
-            where T : class, IApplicationEvent
+            where T : Enum
         {
             await queue.Writer.WriteAsync(applicationEvent, cancellationToken);
         }

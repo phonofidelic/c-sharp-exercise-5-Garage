@@ -9,11 +9,8 @@ namespace Garage.Library
     public interface IGarageAPI
     {
         ResponseGarageCreateDTO CreateNewGarage(RequestGarageCreateDTO requestCreate);
-        void ProcessRequest(RequestType requestType);
+        void ProcessRequest<TEnum>(TEnum requestType) where TEnum : Enum;
     }
 
-    public enum RequestType
-    {
-        GarageCreate
-    }
+    
 }

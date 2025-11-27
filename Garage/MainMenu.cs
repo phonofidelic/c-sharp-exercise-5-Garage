@@ -13,7 +13,7 @@ internal class MainMenu(IEventBus eventBus) : ConsoleMenu(
     menuListDtoItems: [
                 new(
                     name: "Create new Garage",
-                    children: new NewGarage(eventBus)
+                    children: new CreateNewGarageMenu(eventBus)
                 ),
                 new(
                     name: "List parked vehicles",
@@ -34,6 +34,8 @@ internal class MainMenu(IEventBus eventBus) : ConsoleMenu(
 {
 }
 
+
+
 internal class NewGarage(
     //IGarageStore store, 
     IEventBus eventBus) : IRender
@@ -44,7 +46,7 @@ internal class NewGarage(
         //EventBus bus = new(queue);
         //GarageCreatedApplicationEvent garageCreatedEvent = new(new());
         CancellationToken cancellationToken = new();
-        CreateGarageRequestEvent garageCreatedEvent = new(new("My new garage"));
+        CreateGarageRequestEvent garageCreatedEvent = new(new("My new garage", 50));
         await eventBus.PublishAsync(garageCreatedEvent, cancellationToken);
     }
-}
+}  

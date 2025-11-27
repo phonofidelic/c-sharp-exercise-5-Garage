@@ -4,12 +4,12 @@ using System;
 
 namespace Garage
 {
-    internal class CreateGarageRequestEvent : ApplicationEvent
+    internal class CreateGarageRequestEvent : ApplicationEvent<GarageRequestType>
     {
         //public Guid Id { get; init; }
         //public override GarageCreateDTO Payload { get; private set; }
-        public CreateGarageRequestEvent(ResponseGarageCreateDTO garageCreate)
-            : base(garageCreate) { }
+        public CreateGarageRequestEvent(RequestGarageCreateDTO garageCreate)
+            : base(GarageRequestType.GarageCreate, garageCreate) { }
         //{
         //    //Id = Guid.NewGuid();
         //    Payload = garageCreate;

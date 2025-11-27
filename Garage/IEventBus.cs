@@ -1,8 +1,10 @@
-﻿namespace Garage
+﻿using Garage.Library;
+
+namespace Garage
 {
     public interface IEventBus
     {
-        Task PublishAsync<T>(T applicationEvent, CancellationToken cancellationToken = default)
-            where T : class, IApplicationEvent;
+        Task PublishAsync<T>(ApplicationEvent<T> applicationEvent, CancellationToken cancellationToken = default)
+            where T : Enum;
     }
 }

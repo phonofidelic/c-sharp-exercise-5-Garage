@@ -15,7 +15,7 @@ namespace Garage
         public IGarageAPI _api { get; } = api;
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
-            await foreach (IApplicationEvent applicationEvent in queue.Reader.ReadAllAsync(stoppingToken))
+            await foreach (ApplicationEvent<Enum> applicationEvent in queue.Reader.ReadAllAsync(stoppingToken))
             {
                 try
                 {
@@ -32,7 +32,7 @@ namespace Garage
             }
         }
 
-        private void ProcessEvent(ApplicationEvent<> applicationEvent)
+        private void ProcessEvent(ApplicationEvent<Enum> applicationEvent)
         {
             _api.ProcessRequest(applicationEvent.Type);
             //throw new NotImplementedException();

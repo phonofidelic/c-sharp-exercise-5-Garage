@@ -35,9 +35,9 @@ namespace Garage
             Lib.Garage<Vehicle> garage = CreateGarageFromCommand(command);
 
             // Publish the event
-            await eventBus.PublishAsync(
-                new CreateGarageRequestEvent(new("My new garage")),
-                cancellationToken);
+            // await eventBus.PublishAsync(
+            //     new CreateGarageRequestEvent(new("My new garage")),
+            //     cancellationToken);
 
             Console.WriteLine("RETURNING STORE");
             return garageStore;
