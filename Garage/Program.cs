@@ -23,6 +23,7 @@ namespace Garage
                 services.AddSingleton<IUI, GarageUIApplication>();
                 services.AddSingleton<MainMenu>();
                 services.AddSingleton<CreateGarageMenu>();
+                services.AddSingleton<CreateGarageResponseSuccessScreen>();
             })
             .UseConsoleLifetime();
 
