@@ -11,7 +11,6 @@ namespace Garage
             IHostBuilder builder = Host.CreateDefaultBuilder(args);
             builder.ConfigureServices(services =>
             {
-                services.AddSingleton<IAPI, GarageAPI>();
                 services.AddSingleton<IGarageStore>(new Store("My Garage"));
                 services.AddSingleton<MessageQueue>();
                 services.AddSingleton<IEventBus, EventBus>();
@@ -34,7 +33,7 @@ namespace Garage
 
             IApplicationManager manager = host.Services.GetRequiredService<IApplicationManager>();
             manager.Add<ApplicationEvent>(host.Services.GetRequiredService<IUI>());
-            manager.Add<ApplicationEvent>(host.Services.GetRequiredService<IAPI>());
+            manager.Add<ApplicationEvent>(host.Services.GetRequiredService<CreateGarageRequestEventHandler>());
             manager.Start();
 
         }

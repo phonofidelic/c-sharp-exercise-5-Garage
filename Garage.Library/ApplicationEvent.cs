@@ -1,9 +1,8 @@
 ﻿namespace Garage.Library
 {
-    public abstract class ApplicationEvent(Enum type)
+    public abstract class ApplicationEvent()
     {
         public Guid Id { get; init; } = Guid.NewGuid();
-        public Enum Type { get; private init; } = type;
         public object Payload { get; init; }
 
         public ApplicationEvent? Response;
