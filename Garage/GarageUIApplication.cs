@@ -1,23 +1,15 @@
 ﻿using Garage.UI;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Channels;
 using Garage.Library;
-using Microsoft.Extensions.Logging;
 
 namespace Garage
 {
     internal class GarageUIApplication(
         CreateGarageResponseEventHandler handler, 
-        MainMenu mainMenu,
-        ILogger<GarageUIApplication> logger) 
+        MainMenu mainMenu) 
         : Application<CreateGarageResponseEvent>("Garage UI", handler), IUI
     {
         public void Handle(CreateGarageResponseEvent @event)
         {
-            //logger.LogInformation("ToDo: handle event: {Event}", @event);
             _handler.Handle(@event);
         }
 
