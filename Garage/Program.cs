@@ -16,6 +16,12 @@ namespace Garage
                 services.AddSingleton<MessageQueue>();
                 services.AddSingleton<IEventBus, EventBus>();
                 services.AddSingleton<IApplicationRequest, ApplicationRequest>();
+                // ToDo: Implement concrete ApplicationHandlers
+                //services.AddSingleton<IHandler, CreateGarageRequestEventHandler>();
+                // ToDo: Implement concrete event handlers as scoped services?
+                services.AddSingleton<CreateGarageRequestEventHandler>();
+                services.AddSingleton<CreateGarageResponseEventHandler>();
+                services.AddSingleton<IApplicationManager, ApplicationManager>();
                 services.AddHostedService<ApplicationEventProcessorJob>();
                 services.AddSingleton<IUI, GarageUIApplication>();
                 services.AddSingleton<MainMenu>();
@@ -26,9 +32,9 @@ namespace Garage
             IHost host = builder.Build();
             Task task = host.StartAsync();
 
-            ApplicationManager manager = new();
-            manager.Add(host.Services.GetRequiredService<IUI>());
-            manager.Add(host.Services.GetRequiredService<IAPI>());
+            IApplicationManager manager = host.Services.GetRequiredService<IApplicationManager>();
+            manager.Add<ApplicationEvent>(host.Services.GetRequiredService<IUI>());
+            manager.Add<ApplicationEvent>(host.Services.GetRequiredService<IAPI>());
             manager.Start();
 
         }

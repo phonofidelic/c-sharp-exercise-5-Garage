@@ -9,7 +9,10 @@ using System.Threading.Tasks;
 
 namespace Garage
 {
-    public class GarageAPI(IEventBus eventBus, ILogger<GarageAPI> logger) : Application("Garage API", eventBus), IAPI
+    internal class GarageAPI(
+        IEventBus eventBus, 
+        CreateGarageRequestEventHandler createGarageRequestEventHandler, 
+        ILogger<GarageAPI> logger) : Application<CreateGarageRequestEvent>("Garage API", createGarageRequestEventHandler, eventBus), IAPI
     {
         public override ApplicationStatus Run()
         {
@@ -43,6 +46,16 @@ namespace Garage
                     return new NotFoundResponseEvent();
             }
             
+        }
+
+        public void Handle(CreateGarageRequestEvent @event)
+        {
+            _handler.Handle(@event);
+        }
+
+        public void SetNext(IHandler<ApplicationEvent> handler)
+        {
+            throw new NotImplementedException();
         }
     }
 

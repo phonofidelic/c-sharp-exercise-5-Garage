@@ -5,12 +5,28 @@ using System.Linq;
 using System.Text;
 using System.Threading.Channels;
 using Garage.Library;
+using Microsoft.Extensions.Logging;
 
 namespace Garage
 {
-    internal class GarageUIApplication(IEventBus eventBus, MainMenu mainMenu) 
-        : Application("Garage UI", eventBus), IUI
+    internal class GarageUIApplication(
+        CreateGarageResponseEventHandler handler, 
+        IEventBus eventBus, 
+        MainMenu mainMenu,
+        ILogger<GarageUIApplication> logger) 
+        : Application<CreateGarageResponseEvent>("Garage UI", handler, eventBus), IUI
     {
+        public void Handle(CreateGarageResponseEvent @event)
+        {
+            //logger.LogInformation("ToDo: handle event: {Event}", @event);
+            _handler.Handle(@event);
+        }
+
+        public void SetNext(IHandler<ApplicationEvent> handler)
+        {
+            throw new NotImplementedException();
+        }
+
         public override ApplicationStatus Run()
         {
             bool exitApplication = false;

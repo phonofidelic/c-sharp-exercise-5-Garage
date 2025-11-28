@@ -9,7 +9,7 @@ namespace Garage.Library
     public interface IAPI : IApplication
     {
         //ResponseGarageCreateDTO CreateNewGarage(CreateGarageRequestDTO requestCreate);
-        ApplicationEvent RouteEvent(ApplicationEvent request);
+        //ApplicationEvent Route(TEvent @event);
     }
 
 

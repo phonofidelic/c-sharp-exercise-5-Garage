@@ -11,7 +11,7 @@ namespace Garage
 {
     internal class CreateGarageMenu : IRender
     {
-        public IApplicationRequest _request;
+        private IApplicationRequest _request;
         private readonly ILogger<CreateGarageMenu> _logger;
         public CreateGarageMenu(IApplicationRequest request, ILogger<CreateGarageMenu> logger)
         {
