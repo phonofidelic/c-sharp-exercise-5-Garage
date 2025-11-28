@@ -4,7 +4,7 @@ using Garage.Library;
 
 namespace Garage;
 
-internal class CreateNewGarageMenu(IEventBus eventBus): ConsoleMenu
+internal class CreateNewGarageMenu(): ConsoleMenu
 (
     name: "Create a new Garage",
     description: "Initialize a new Garage by giving it a name and indicating its capacity.",

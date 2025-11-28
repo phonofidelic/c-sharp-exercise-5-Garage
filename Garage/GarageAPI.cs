@@ -10,9 +10,8 @@ using System.Threading.Tasks;
 namespace Garage
 {
     internal class GarageAPI(
-        IEventBus eventBus, 
         CreateGarageRequestEventHandler createGarageRequestEventHandler, 
-        ILogger<GarageAPI> logger) : Application<CreateGarageRequestEvent>("Garage API", createGarageRequestEventHandler, eventBus), IAPI
+        ILogger<GarageAPI> logger) : Application<CreateGarageRequestEvent>("Garage API", createGarageRequestEventHandler), IAPI
     {
         public override ApplicationStatus Run()
         {

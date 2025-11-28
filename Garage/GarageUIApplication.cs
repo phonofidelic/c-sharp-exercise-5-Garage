@@ -11,10 +11,9 @@ namespace Garage
 {
     internal class GarageUIApplication(
         CreateGarageResponseEventHandler handler, 
-        IEventBus eventBus, 
         MainMenu mainMenu,
         ILogger<GarageUIApplication> logger) 
-        : Application<CreateGarageResponseEvent>("Garage UI", handler, eventBus), IUI
+        : Application<CreateGarageResponseEvent>("Garage UI", handler), IUI
     {
         public void Handle(CreateGarageResponseEvent @event)
         {
