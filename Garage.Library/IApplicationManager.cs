@@ -3,8 +3,8 @@
     public interface IApplicationManager
     {
         public void Add<TEvent>(IApplication app) where TEvent : ApplicationEvent;
+        public void Add(IHandler handler);
         public void Start();
-
-        public void Route(ApplicationEvent @event);
+        public void Handle(ApplicationEvent @event);
     }
 }

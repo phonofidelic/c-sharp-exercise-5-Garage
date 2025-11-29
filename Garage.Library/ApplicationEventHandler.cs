@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Extensions.Logging;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,18 +7,21 @@ using System.Threading.Tasks;
 
 namespace Garage.Library
 {
-    public abstract class ApplicationEventHandler<TEvent> : IHandler<TEvent> where TEvent : ApplicationEvent
+    public abstract class ApplicationEventHandler<TEvent>(ILogger logger) : IHandler where TEvent : ApplicationEvent
     {
-        protected abstract void _handle(TEvent @event);
-        public virtual void Handle(TEvent @event)
+        protected abstract void _handle<T>(T @event) where T : ApplicationEvent;
+        public virtual void Handle<T>(T @event) where T : ApplicationEvent
         {
             // Check if the concrete handler can handle the event
+            logger.LogInformation("Checking if handler can handle event: {Event}, {CanHandle}", @event, @event.GetType() == typeof(TEvent));
+            logger.LogInformation("Handler event type: {EventType}", typeof(TEvent));
+            logger.LogInformation("Target event type: {EventType}", @event);
             if (@event.GetType() == typeof(TEvent))
             {
                 _handle(@event);
             }
         }
 
-        public abstract void SetNext(IHandler<TEvent> handler);
+        public abstract void SetNext(IHandler handler);
     }
 }

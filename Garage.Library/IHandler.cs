@@ -1,8 +1,8 @@
 ﻿namespace Garage.Library
 {
-    public interface IHandler<TEvent> where TEvent : ApplicationEvent
+    public interface IHandler
     {
-        void Handle(TEvent @event);
-        void SetNext(IHandler<TEvent> handler);
+        void Handle<TEvent>(TEvent @event) where TEvent : ApplicationEvent;
+        void SetNext(IHandler handler);
     }
 }

@@ -5,13 +5,11 @@ namespace Garage.Library
 {
     public class ApplicationEventProcessorJob(
         MessageQueue queue,
-        //IAPI api,
         IApplicationManager manager,
         ILogger<ApplicationEventProcessorJob> logger)
         : BackgroundService
     {
         private IApplicationManager _manager { get; } = manager;
-        //public IAPI _api { get; } = api;
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
             await foreach (ApplicationEvent applicationEvent in queue.Reader.ReadAllAsync(stoppingToken))
@@ -19,12 +17,10 @@ namespace Garage.Library
                 try
                 {
                     logger.LogInformation("Processing message\n\tEvent: {Event}\tId: {Id}\tRecord: {Record}", applicationEvent, applicationEvent.Id, applicationEvent.Payload);
-                    // Route request to the appropriate handler?
-                    //Send the event to the ApplicationManager?
-                    _manager.Route(applicationEvent);
+                    // Send the event to registered handlers
+                    _manager.Handle(applicationEvent);
                     
-                    //ApplicationEvent response = _api.RouteEvent(applicationEvent);
-                    //logger.LogInformation("API response payload: {Response}", response.Payload);
+                    // ToDo: remove mock async delay
                     await Task.Delay(100, stoppingToken);
                 }
                 catch (Exception ex)

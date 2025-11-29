@@ -3,6 +3,7 @@
     public class ApplicationManager() : IApplicationManager
     {
         private List<IApplication> _applications = [];
+        private List<IHandler> _handlers = [];
 
         public void Start()
         {
@@ -15,9 +16,13 @@
             _applications.Add(app);
         }
 
-        public void Route(ApplicationEvent @event)
+        public void Add(IHandler handler)
         {
-            Parallel.ForEach(_applications, (app) => app.Handle(@event));
+            _handlers.Add(handler);
+        }
+
+        public void Handle(ApplicationEvent @event) {
+            Parallel.ForEach(_handlers, (handler) => handler.Handle(@event));
         }
     }
 }

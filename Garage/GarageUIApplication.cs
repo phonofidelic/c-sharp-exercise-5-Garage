@@ -4,21 +4,10 @@ using Garage.UI;
 namespace Garage
 {
     internal class GarageUIApplication(
-        CreateGarageResponseEventHandler handler, 
         MainMenu mainMenu
         ) 
-        : Application<CreateGarageResponseEvent>("Garage UI", handler), IUI
+        : Application("Garage UI"), IUI
     {
-        public void Handle(CreateGarageResponseEvent @event)
-        {
-            _handler.Handle(@event);
-        }
-
-        public void SetNext(IHandler<ApplicationEvent> handler)
-        {
-            throw new NotImplementedException();
-        }
-
         public override ApplicationStatus Run()
         {
             bool exitApplication = false;

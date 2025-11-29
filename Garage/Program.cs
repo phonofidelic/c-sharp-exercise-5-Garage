@@ -11,16 +11,18 @@ namespace Garage
             IHostBuilder builder = Host.CreateDefaultBuilder(args);
             builder.ConfigureServices(services =>
             {
-                services.AddSingleton<IGarageStore>(new Store("My Garage"));
                 services.AddSingleton<MessageQueue>();
+                services.AddHostedService<ApplicationEventProcessorJob>();
+                services.AddSingleton<IGarageStore>(new Store("My Garage"));
                 services.AddSingleton<IEventBus, EventBus>();
                 services.AddSingleton<IApplicationRequest, ApplicationRequest>();
+                services.AddSingleton<IApplicationManager, ApplicationManager>();
+                services.AddSingleton<IUI, GarageUIApplication>();
                 // ToDo: Implement concrete event handlers as scoped services?
+                // Register event handlers
                 services.AddSingleton<CreateGarageRequestEventHandler>();
                 services.AddSingleton<CreateGarageResponseEventHandler>();
-                services.AddSingleton<IApplicationManager, ApplicationManager>();
-                services.AddHostedService<ApplicationEventProcessorJob>();
-                services.AddSingleton<IUI, GarageUIApplication>();
+                // Register UI components
                 services.AddSingleton<MainMenu>();
                 services.AddSingleton<CreateGarageMenu>();
                 services.AddSingleton<CreateGarageResponseSuccessScreen>();
@@ -32,7 +34,8 @@ namespace Garage
 
             IApplicationManager manager = host.Services.GetRequiredService<IApplicationManager>();
             manager.Add<ApplicationEvent>(host.Services.GetRequiredService<IUI>());
-            manager.Add<ApplicationEvent>(host.Services.GetRequiredService<CreateGarageRequestEventHandler>());
+            manager.Add(host.Services.GetRequiredService<CreateGarageRequestEventHandler>());
+            manager.Add(host.Services.GetRequiredService<CreateGarageResponseEventHandler>());
             manager.Start();
 
         }
