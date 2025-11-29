@@ -9,6 +9,7 @@ namespace Garage.Library
 {
     public abstract class ApplicationEventHandler<TEvent>(ILogger logger) : IHandler where TEvent : ApplicationEvent
     {
+        protected ApplicationEventHandler<TEvent>? Next { get; set; } = null;
         protected abstract void _handle<T>(T @event) where T : ApplicationEvent;
         public virtual void Handle<T>(T @event) where T : ApplicationEvent
         {

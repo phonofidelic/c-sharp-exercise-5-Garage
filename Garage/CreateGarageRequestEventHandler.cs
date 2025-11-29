@@ -26,6 +26,7 @@ namespace Garage
                 Guid.NewGuid(),
                 ];
 
+
             CancellationToken stoppingToken = new();
             _ = request.Publish(
                 new CreateGarageResponseEvent(new CreateGarageResponseDTO(name, capacity, vehicles)),

@@ -33,7 +33,7 @@ namespace Garage
             Task task = host.StartAsync();
 
             IApplicationManager manager = host.Services.GetRequiredService<IApplicationManager>();
-            manager.Add<ApplicationEvent>(host.Services.GetRequiredService<IUI>());
+            manager.Add(host.Services.GetRequiredService<IUI>());
             manager.Add(host.Services.GetRequiredService<CreateGarageRequestEventHandler>());
             manager.Add(host.Services.GetRequiredService<CreateGarageResponseEventHandler>());
             manager.Start();

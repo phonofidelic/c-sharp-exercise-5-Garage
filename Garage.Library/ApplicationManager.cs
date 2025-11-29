@@ -10,9 +10,8 @@
             Parallel.ForEach(_applications, (app) => app.Run());
         }
 
-        public void Add<TEvent>(IApplication app) where TEvent : ApplicationEvent
+        public void Add(IApplication app)
         {
-            // ToDo: register event handlers for each application here?
             _applications.Add(app);
         }
 

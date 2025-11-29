@@ -22,7 +22,7 @@ namespace Garage
                 }
             }
             ConsoleUI.Continue();
-            mainMenu?.Render();
+            //mainMenu?.Render();
         }
     }
 }
