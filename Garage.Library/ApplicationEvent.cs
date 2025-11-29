@@ -11,8 +11,6 @@
         {
             Response = response();
         }
-
-        // ToDo: Implement SetNext()
     }
 }
 

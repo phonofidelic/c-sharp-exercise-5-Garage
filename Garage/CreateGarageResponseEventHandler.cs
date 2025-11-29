@@ -31,17 +31,5 @@ namespace Garage
         {
             throw new NotImplementedException();
         }
-
-        //public override void Handle<TEvent>(TEvent @event)
-        //{
-        //    // Check if the concrete handler can handle the event
-        //    logger.LogInformation("Checking if handler can handle event: {Event}, {CanHandle}", @event, @event.GetType() == typeof(CreateGarageResponseEvent));
-        //    logger.LogInformation("Handler event type: {EventType}", typeof(CreateGarageResponseEvent));
-        //    logger.LogInformation("Target event type: {EventType}", @event);
-        //    if (@event.GetType() == typeof(CreateGarageResponseEvent))
-        //    {
-        //        _handle(@event);
-        //    }
-        //}
     }
 }

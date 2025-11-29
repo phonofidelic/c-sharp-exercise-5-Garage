@@ -2,8 +2,7 @@
 
 namespace Garage
 {
-    internal class CreateGarageResponseSuccessScreen(
-        MainMenu mainMenu)
+    internal class CreateGarageResponseSuccessScreen()
     {
         public void RenderWithProps(CreateGarageResponseDTO props)
         {
@@ -22,7 +21,6 @@ namespace Garage
                 }
             }
             ConsoleUI.Continue();
-            //mainMenu?.Render();
         }
     }
 }
