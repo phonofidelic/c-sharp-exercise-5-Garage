@@ -3,7 +3,7 @@ using Garage.UI;
 
 namespace Garage;
 
-internal class ParkNewVehicleMenu(): ConsoleMenu
+internal class ParkNewVehicleMenu(): ConsoleMenu<ParkNewVehicleDTO>
 (
     name: "Enter vehicle details", 
     description: "", 
@@ -13,3 +13,5 @@ internal class ParkNewVehicleMenu(): ConsoleMenu
     ],
     selectionPrompt: "Select an option from the menu.\nPress 'Esc.' to go back"
 ) {}
+
+public record ParkNewVehicleDTO();

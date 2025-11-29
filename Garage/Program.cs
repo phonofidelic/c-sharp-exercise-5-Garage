@@ -24,7 +24,8 @@ namespace Garage
                 services.AddSingleton<CreateGarageResponseEventHandler>();
                 // Register UI components
                 services.AddSingleton<MainMenu>();
-                services.AddSingleton<CreateGarageMenu>();
+                services.AddSingleton<CreateNewGarageMenu>();
+                //services.AddSingleton<GarageNameInput>();
                 services.AddSingleton<CreateGarageResponseSuccessScreen>();
             })
             .UseConsoleLifetime();

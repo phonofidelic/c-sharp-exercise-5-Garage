@@ -8,14 +8,14 @@ using System.Threading.Tasks;
 
 namespace Garage.UI
 {
-    public abstract class ConsoleMenu : IRender
+    public abstract class ConsoleMenu<TProps> : IRender where TProps : class
     
     {
         public string Name { get; private set; }
         public string Description { get; private set; }
         public MenuSelection? Selection { get; protected set; } = null;
         public Exception? MenuException { get; protected set; } = null;
-        protected readonly MenuList _menuListItems;
+        protected MenuList _menuListItems { get; set; }
         protected readonly string _selectionPrompt;
         protected readonly string _availableMenuOptionsMessage;
 

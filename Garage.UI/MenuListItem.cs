@@ -9,8 +9,6 @@ namespace Garage.UI
 
         public IRender? Children { get; private set; }
 
-        public MenuListItem Current => throw new NotImplementedException();
-
         public MenuListItem(int option, string name, IRender children)
         {
             Name = name;
