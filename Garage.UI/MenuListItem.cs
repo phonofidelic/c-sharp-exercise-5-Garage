@@ -2,7 +2,7 @@
 
 namespace Garage.UI
 {
-    public class MenuListItem : IRender, IEnumerator
+    public class MenuListItem : IRender
     {
         public string Name { get; private set; }
         public int Option { get; private set; }
@@ -10,8 +10,6 @@ namespace Garage.UI
         public IRender? Children { get; private set; }
 
         public MenuListItem Current => throw new NotImplementedException();
-
-        object IEnumerator.Current => Current;
 
         public MenuListItem(int option, string name, IRender children)
         {
@@ -29,21 +27,6 @@ namespace Garage.UI
         public void Render()
         {
             ConsoleUI.WriteLine($"{Option}.\t{Name}");
-        }
-
-        public bool MoveNext()
-        {
-            throw new NotImplementedException();
-        }
-
-        public void Reset()
-        {
-            throw new NotImplementedException();
-        }
-
-        public void Dispose()
-        {
-            throw new NotImplementedException();
         }
     }
 } 
