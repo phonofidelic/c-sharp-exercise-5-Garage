@@ -1,15 +1,12 @@
-﻿using Garage.UI;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Channels;
-using Garage.Library;
+﻿using Garage.Library;
+using Garage.UI;
 
 namespace Garage
 {
-    internal class GarageUIApplication(IEventBus eventBus, MainMenu mainMenu) 
-        : Application("Garage UI", eventBus), IUI
+    internal class GarageUIApplication(
+        MainMenu mainMenu
+        ) 
+        : Application("Garage UI"), IUI
     {
         public override ApplicationStatus Run()
         {
