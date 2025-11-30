@@ -3,7 +3,7 @@ using Garage.UI;
 
 namespace Garage;
 
-internal class ListVehiclesMenu(): ConsoleMenu<ListVehiclesDTO>
+internal class ListVehiclesMenu(): ConsoleMenu
 (
     name: "Parked Vehicles", 
     description: "Showing all vehicles currently parked in the garage:", 
@@ -15,5 +15,3 @@ internal class ListVehiclesMenu(): ConsoleMenu<ListVehiclesDTO>
     ], 
     selectionPrompt: "Press 'Esc.' to go back"
 ) {}
-
-public record ListVehiclesDTO();

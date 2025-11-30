@@ -1,0 +1,65 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Garage.UI
+{
+    public abstract class ConsoleUIComponent(
+        string name,
+        string description,
+        string prompt
+        ) : IRender
+    {
+        public string Name { get; private set; } = name;
+        public string Description { get; private set; } = description;
+        public MenuSelection? Selection { get; protected set; } = null;
+        protected string _availableOptionsMessage { get; set; } = "";
+        protected MenuList _menuListItems { get; set; } = [];
+        protected  readonly string _selectionPrompt = prompt;
+
+        public abstract void Render();
+
+        protected MenuSelection TryGetMenuSelectionFromConsoleKeyInfo(ConsoleKeyInfo selectionInput)
+        {
+            if (selectionInput.Key == ConsoleKey.Escape)
+            {
+                return new MenuSelection(0);
+            }
+
+            var inputChar = selectionInput.KeyChar;
+            if (!int.TryParse(inputChar.ToString(), out int option))
+                throw new Exception($"'{inputChar}' is not an available option. Please use a number to make a selection from the list.");
+
+            var found = _menuListItems.FirstOrDefault(item => item.Option.Equals(option));
+            if (found == null)
+                return new MenuSelection(option);
+            return new MenuSelection(option, found);
+        }
+        protected static string BuildAvailableOptionsMessage(MenuList menuListItems)
+        {
+            if (menuListItems.Count < 1) return "";
+            string firstOptionString = $"'{menuListItems.ToArray()[0].Option}'";
+            string additionalOptionsString = "";
+            string availableOptionsString = "";
+            foreach ((int availableOption, int index) in menuListItems.Select((item, index) => (item.Option, index)))
+            {
+                if (menuListItems.Count > 1)
+                {
+                    if (index > 0)
+                    {
+                        string separator = index + 1 == menuListItems.Count ? " and " : ", ";
+                        additionalOptionsString += $"{separator}'{availableOption}'";
+                    }
+                    availableOptionsString = $"Available options are {firstOptionString}{additionalOptionsString}.";
+                }
+                else
+                {
+                    availableOptionsString = $"The only available option is {firstOptionString}.";
+                }
+            }
+            return availableOptionsString;
+        }
+    }
+}

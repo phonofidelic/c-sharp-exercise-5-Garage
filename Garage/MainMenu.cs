@@ -2,7 +2,7 @@ using Garage.UI;
 
 namespace Garage;
 
-internal class MainMenu(CreateNewGarageForm createNewGarageMenu) : ConsoleMenu<MainMenuDTO>(
+internal class MainMenu(CreateNewGarageForm createNewGarageMenu) : ConsoleMenu(
     name: "Main menu",
     description: "Use the menu to make a selection:",
     menuListDtoItems: [

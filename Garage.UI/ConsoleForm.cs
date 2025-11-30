@@ -7,16 +7,11 @@ using System.Threading.Tasks;
 
 namespace Garage.UI
 {
-    public abstract class ConsoleForm<TFormData> : IRender, IRenderAsync where TFormData : class
+    public abstract class ConsoleForm<TFormData> : ConsoleUIComponent, IRender, IRenderAsync where TFormData : class
     {
-        public string Name { get; private set; }
-        public string Description { get; private set; }
-        protected MenuSelection? Selection { get; set; }
-        protected Exception? FormException { get; set; } = null;
-        protected MenuList _menuListItems { get; set; }
         public Dictionary<string, string> FormData { get; protected set; } = [];
         private string _formPrompt { get; set; }
-        protected readonly string _availableFormOptionsMessage;
+        public Exception? FormException { get; protected set; } = null;
         protected bool IsSubmitted { get; set; } = false;
 
         public ConsoleForm(
@@ -24,14 +19,12 @@ namespace Garage.UI
         string description,
         string inputPrompt,
         IEnumerable<FormInputDTO> inputs
-        )
+        ) : base(name, description, inputPrompt)
         {
-            Name = name;
-            Description = description;
             _formPrompt = inputPrompt;
             _menuListItems = new MenuList(inputs);
 
-            _availableFormOptionsMessage = BuildAvailableOptionsMessage(_menuListItems);
+            _availableOptionsMessage = BuildAvailableOptionsMessage(_menuListItems);
         }
 
         public async Task RenderAsync()
@@ -75,7 +68,7 @@ namespace Garage.UI
 
                         var selectedItem = _menuListItems
                         .FirstOrDefault(item => item.Option.Equals(Selection.Option)) ??
-                            throw new Exception($"'{Selection.Option}' is not an available option. {_availableFormOptionsMessage}");
+                            throw new Exception($"'{Selection.Option}' is not an available option. {_availableOptionsMessage}");
 
                         if (selectedItem != null)
                         {
@@ -118,48 +111,7 @@ namespace Garage.UI
         
         public abstract Task Submit();
 
-        protected MenuSelection TryGetMenuSelectionFromConsoleKeyInfo(ConsoleKeyInfo selectionInput)
-        {
-            if (selectionInput.Key == ConsoleKey.Escape)
-            {
-                return new MenuSelection(0);
-            }
-
-            var inputChar = selectionInput.KeyChar;
-            if (!int.TryParse(inputChar.ToString(), out int option))
-                throw new Exception($"'{inputChar}' is not an available option. Please use a number to make a selection from the list.");
-
-            var found = _menuListItems.FirstOrDefault(item => item.Option.Equals(option));
-            if (found == null)
-                return new MenuSelection(option);
-            return new MenuSelection(option, found);
-        }
-        protected static string BuildAvailableOptionsMessage(MenuList menuListItems)
-        {
-            if (menuListItems.Count < 1) return "";
-            string firstOptionString = $"'{menuListItems.ToArray()[0].Option}'";
-            string additionalOptionsString = "";
-            string availableOptionsString = "";
-            foreach ((int availableOption, int index) in menuListItems.Select((item, index) => (item.Option, index)))
-            {
-                if (menuListItems.Count > 1)
-                {
-                    if (index > 0)
-                    {
-                        string separator = index + 1 == menuListItems.Count ? " and " : ", ";
-                        additionalOptionsString += $"{separator}'{availableOption}'";
-                    }
-                    availableOptionsString = $"Available options are {firstOptionString}{additionalOptionsString}.";
-                }
-                else
-                {
-                    availableOptionsString = $"The only available option is {firstOptionString}.";
-                }
-            }
-            return availableOptionsString;
-        }
-
-        public void Render()
+        public override void Render()
         {
             _ = RenderAsync();
         }

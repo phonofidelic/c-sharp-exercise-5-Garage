@@ -3,7 +3,7 @@ using Garage.UI;
 
 namespace Garage;
 
-internal class RemoveVehicleMenu(): ConsoleMenu<RemoveVehicleDTO>
+internal class RemoveVehicleMenu(): ConsoleMenu
 (
     name: "Remove vehicle", 
     description: "Select a vehicle to remove from the garage:", 
@@ -14,5 +14,3 @@ internal class RemoveVehicleMenu(): ConsoleMenu<RemoveVehicleDTO>
     ], 
     selectionPrompt: "Select an option from the menu.\nPress 'Esc.' to go back"
 ) {}
-
-public record RemoveVehicleDTO();
