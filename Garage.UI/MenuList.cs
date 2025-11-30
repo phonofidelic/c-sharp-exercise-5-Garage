@@ -1,46 +1,11 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections;
 
 namespace Garage.UI
 {
-    public class MenuItemDTO
-    {
-        public string Name { get; private set; }
-        public IRender? Children { get; private set; }
-
-        public MenuItemDTO(string name, IRender children)
-        {
-            Name = name;
-            Children = children;
-        }
-        public MenuItemDTO(string name)
-        {
-            Name = name;
-            Children = null;
-        }
-    }
-
-    public class FormInputDTO
-    {
-        public string Name { get; private set; }
-        public string Description { get; private set; }
-        public IInput Input { get; private set; }
-        public FormInputDTO(string name, string description, IInput input)
-        {
-            Name = name;
-            Description = description;
-            Input = input;
-        }
-    }
     public class MenuList : IEnumerable<MenuListItem>
     {
         public int Count { get; private set; } = 0;        
         private readonly List<MenuListItem> _list;
-
 
         public MenuList()
         {
