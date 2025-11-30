@@ -1,10 +1,10 @@
 ﻿namespace Garage.UI
 {
-    public class FormInputDTO
+    public record FormInputDTO
     {
-        public string Name { get; private set; }
-        public string Description { get; private set; }
-        public FormInput Input { get; private set; }
+        public string Name { get; init; }
+        public string Description { get; init; }
+        public FormInput Input { get; init; }
         public FormInputDTO(string name, string description, FormInput input)
         {
             Name = name;

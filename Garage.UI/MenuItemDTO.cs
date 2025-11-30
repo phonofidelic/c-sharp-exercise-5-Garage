@@ -1,9 +1,9 @@
 ﻿namespace Garage.UI
 {
-    public class MenuItemDTO
+    public record MenuItemDTO
     {
-        public string Name { get; private set; }
-        public IRender? Children { get; private set; }
+        public string Name { get; init; }
+        public IRender? Children { get; init; }
 
         public MenuItemDTO(string name, IRender children)
         {
