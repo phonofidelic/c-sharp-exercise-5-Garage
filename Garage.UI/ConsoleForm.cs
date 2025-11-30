@@ -11,10 +11,10 @@ namespace Garage.UI
     {
         public string Name { get; private set; }
         public string Description { get; private set; }
-        protected FormSelection? Selection { get; set; }
+        protected MenuSelection? Selection { get; set; }
         protected Exception? FormException { get; set; } = null;
         protected MenuList _inputList = [];
-        public Dictionary<string, string> FormData { get; private set; } = [];
+        public Dictionary<string, string> FormData { get; protected set; } = [];
         private string _formPrompt { get; set; }
         protected readonly string _availableFormOptionsMessage;
         protected bool IsSubmitted { get; set; } = false;
@@ -41,9 +41,9 @@ namespace Garage.UI
                 ConsoleUI.Clear();
                 ConsoleUI.WriteLine($"{Name}\n\n");
                 ConsoleUI.WriteLine($"{Description}\n");
-                foreach(var input in _inputList)
+                foreach(var item in _inputList)
                 {
-                    input.Render();
+                    item.Render();
                 }
 
                 if (FormException != null)
@@ -103,11 +103,11 @@ namespace Garage.UI
         
         public abstract Task Submit();
 
-        protected FormSelection TryGetMenuSelectionFromConsoleKeyInfo(ConsoleKeyInfo selectionInput)
+        protected MenuSelection TryGetMenuSelectionFromConsoleKeyInfo(ConsoleKeyInfo selectionInput)
         {
             if (selectionInput.Key == ConsoleKey.Escape)
             {
-                return new FormSelection(0);
+                return new MenuSelection(0);
             }
 
             var inputChar = selectionInput.KeyChar;
@@ -116,8 +116,8 @@ namespace Garage.UI
 
             var found = _inputList.FirstOrDefault(item => item.Option.Equals(option));
             if (found == null)
-                return new FormSelection(option);
-            return new FormSelection(option, found);
+                return new MenuSelection(option);
+            return new MenuSelection(option, found);
         }
         protected static string BuildAvailableOptionsMessage(MenuList menuListItems)
         {

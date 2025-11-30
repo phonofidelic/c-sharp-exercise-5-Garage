@@ -3,11 +3,11 @@ using Garage.UI;
 
 namespace Garage
 {
-    internal class CreateNewGarageMenu 
+    internal class CreateNewGarageForm 
         : Form<CreateGarageRequestDTO>
     {
         private IApplicationRequest _request;
-        public CreateNewGarageMenu(
+        public CreateNewGarageForm(
             IApplicationRequest request)
         : base(
             name: "Create a new Garage",
@@ -17,6 +17,9 @@ namespace Garage
         )
         {
             _request = request;
+
+            FormData["Name"] = null;
+            FormData["Capacity"] = null;
              
             _inputList.Add(new FormInputDTO(
                 "Name", 
