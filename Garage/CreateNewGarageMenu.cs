@@ -1,73 +1,69 @@
 using Garage.Library;
 using Garage.UI;
-using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.ComponentModel;
 
 namespace Garage
 {
-
-
-
     internal class CreateNewGarageMenu 
         : Form<CreateGarageRequestDTO>
     {
+        private IApplicationRequest _request;
         public CreateNewGarageMenu(
-    //GarageNameInput garageNameInput
-    //IServiceScopeFactory serviceScopeFactory
-            )
+            IApplicationRequest request)
         : base(
-        name: "Create a new Garage",
-        description: "Initialize a new Garage by giving it a name and indicating its capacity.",
-        inputs: [],
-            
-        inputPrompt: "Select a property from the menu to configure."
+            name: "Create a new Garage",
+            description: "Initialize a new Garage by giving it a name and indicating its capacity.",
+            inputs: [],
+            inputPrompt: "Select a property from the menu to configure."
         )
         {
-            Add(new("Name", "Enter a name for your new garage:"));
+            _request = request;
+             
+            _inputList.Add(new FormInputDTO(
+                "Name", 
+                "Enter a name for your new garage:",
+                new FormTextInput("Name",  "Enter a name for your new garage:")));
+
+            _inputList.Add(new FormInputDTO(
+                "Capacity",
+                "Enter the maximum capacity of your garage:",
+                new FormTextInput("Capacity", "Enter the maximum capacity of your garage:")));
+
+            _inputList.Add(new FormInputDTO(
+                "Submit",
+                "Submit",
+                new FormSubmit("Submit", "Submit")));
         }
-    }
 
-
-    internal class GarageNameInput : IRender
-    {
-        private CreateNewGarageMenu? Parent { get; set; } = null;
-        //public string? Value { get; private set; } = null;
-        //public GarageNameInput(CreateNewGarageMenu parent)
-        //{
-        //    //Parent = parent;
-        //}
-
-        public GarageNameInput(IServiceScopeFactory serviceScopeFactory)
+        public override CreateGarageRequestDTO ParseFormData(Dictionary<string, string> rawFormData)
         {
-            using IServiceScope scope = serviceScopeFactory.CreateScope();
-            var parent = scope.ServiceProvider.GetRequiredService<CreateNewGarageMenu>();
-            SetParent(parent);
+            var name = rawFormData["Name"] ?? throw new Exception("'Name' is a required field");
+            var capacity = rawFormData["Capacity"] ?? throw new Exception("'Capacity' is a required field");
+            if (!int.TryParse(capacity, out int capacityInt))
+                throw new Exception("'Capacity must be a number'");
+            if (capacityInt < 1)
+                throw new Exception("'Capacity' must be greater than 0");
+            
+            return new(name, capacityInt);
         }
 
-        public void SetParent(CreateNewGarageMenu parent)
+        public override async Task Submit()
         {
-            Parent = parent;
+            try
+            {
+                var parsedFormData = ParseFormData(FormData) ?? throw new Exception($"Form data is incomplete: {FormData}");
+                CancellationToken stoppingToken = new();
+                await _request.Publish(new CreateGarageRequestEvent(parsedFormData), stoppingToken);
+                
+                // Form was submitted successfully
+                ResetFormData();
+                IsSubmitted = true;
+                ConsoleUI.Clear();
+                ConsoleUI.WriteLine("New garage was created successfully");
+                ConsoleUI.Continue();
+            } catch (Exception ex)
+            {
+                FormException = ex;
+            }
         }
-        public void Render()
-        {
-            string name = ConsoleUI.GetInputFromReadLine(message: "What is the name of your garage?") ?? "";
-            // Set parent state with callback?
-
-            //CreateGarageRequestDTO parentProps = Parent.Props;
-            //if (Parent != null)
-                //Parent.SetProps(Parent.Props with { Name = name });
-            //setParentProps(parentProps => parentProps with { Name = name });
-            //setParentProps(props => new();
-        }
-
-        //public void Render(RenderCallback<CreateGarageRequestDTO>  callback)
-        //{
-        //    string name = ConsoleUI.GetInputFromReadLine(message: "What is the name of your garage?") ?? "";
-        //    // Set parent state with callback?
-
-        //    //CreateGarageRequestDTO parentProps = Parent.Props;
-        //    callback((CreateGarageRequestDTO parentProps) => parentProps with { Name = name });
-        //}
     }
 }

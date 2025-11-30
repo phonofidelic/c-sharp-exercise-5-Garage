@@ -9,8 +9,8 @@ namespace Garage.UI
     public class FormSelection
     {
         public int Option { get; private init; }
-        public FormListItem? Item { get; private init; }
-        public FormSelection(int option, FormListItem item)
+        public MenuListItem? Item { get; private init; }
+        public FormSelection(int option, MenuListItem item)
         {
             Option = option;
             Item = item;

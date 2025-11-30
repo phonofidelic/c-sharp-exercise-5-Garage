@@ -23,6 +23,19 @@ namespace Garage.UI
             Children = null;
         }
     }
+
+    public class FormInputDTO
+    {
+        public string Name { get; private set; }
+        public string Description { get; private set; }
+        public IInput Input { get; private set; }
+        public FormInputDTO(string name, string description, IInput input)
+        {
+            Name = name;
+            Description = description;
+            Input = input;
+        }
+    }
     public class MenuList : IEnumerable<MenuListItem>
     {
         public int Count { get; private set; } = 0;        
@@ -43,6 +56,15 @@ namespace Garage.UI
             }
         }
 
+        public MenuList(IEnumerable<FormInputDTO> items)
+        {
+            _list = [];
+            foreach(FormInputDTO item in items)
+            {
+                Add(item);
+            }
+        }
+
         public void Add(MenuItemDTO item)
         {
             Count++;
@@ -50,6 +72,12 @@ namespace Garage.UI
                 _list.Add(new MenuListItem(Count, item.Name, item.Children));
             else
                 _list.Add(new MenuListItem(Count, item.Name));
+        }
+
+        public void Add(FormInputDTO item)
+        {
+            Count++;
+            _list.Add(new MenuListItem(Count, item.Name, item.Description, item.Input));
         }
 
         public IEnumerator<MenuListItem> GetEnumerator()

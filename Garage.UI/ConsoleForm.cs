@@ -7,56 +7,29 @@ using System.Threading.Tasks;
 
 namespace Garage.UI
 {
-    public class FormInputDTO<TFormData>
-    {
-        public string Name { get; private set; }
-        public string InputPrompt { get; set; }
-        //public IInput Children { get; private set; }
-
-        public FormInputDTO(string name, string inputPrompt)
-        {
-            Name = name;
-            InputPrompt = inputPrompt;
-            //Children = children;
-        }
-        //public FormInputDTO(string name)
-        //{
-        //    Name = name;
-        //    Children = null;
-        //}
-
-    }
-    public class Form<TFormData> : IRender where TFormData : class
+    public abstract class Form<TFormData> : IRender where TFormData : class
     {
         public string Name { get; private set; }
         public string Description { get; private set; }
         protected FormSelection? Selection { get; set; }
-
         protected Exception? FormException { get; set; } = null;
-
-        private List<FormListItem> _inputList = [];
-        
-        public TFormData? FormData { get; private set; } = null;
-
-        private string _inputPrompt { get; set; }
+        protected MenuList _inputList = [];
+        public Dictionary<string, string> FormData { get; private set; } = [];
+        private string _formPrompt { get; set; }
         protected readonly string _availableFormOptionsMessage;
-        private bool ISubmitted { get; set; } = false;
-        private int Count { get; set; } = 0;
+        protected bool IsSubmitted { get; set; } = false;
 
         public Form(
         string name,
         string description,
         string inputPrompt,
-        IEnumerable<FormInputDTO<TFormData>> inputs
+        IEnumerable<FormInputDTO> inputs
         )
         {
             Name = name;
             Description = description;
-            _inputPrompt = inputPrompt;
-            foreach (var input in inputs)
-            {
-                Add(input);
-            }
+            _formPrompt = inputPrompt;
+            _inputList = new MenuList(inputs);
 
             _availableFormOptionsMessage = BuildAvailableOptionsMessage(_inputList);
         }
@@ -70,12 +43,17 @@ namespace Garage.UI
                 ConsoleUI.WriteLine($"{Description}\n");
                 foreach(var input in _inputList)
                 {
-                    ConsoleUI.WriteLine($"{input.Option}.\t{input.Name}");
+                    input.Render();
+                }
+
+                if (FormException != null)
+                {
+                    ConsoleUI.WriteException(FormException.Message);
                 }
 
                 try
                 {
-                    var selectionInput = ConsoleUI.GetSelectionFromReadKey(_inputPrompt);
+                    var selectionInput = ConsoleUI.GetSelectionFromReadKey(_formPrompt);
                     FormException = null;
 
                     if (_inputList.Count > 0)
@@ -90,33 +68,40 @@ namespace Garage.UI
                         .FirstOrDefault(item => item.Option.Equals(Selection.Option)) ??
                             throw new Exception($"'{Selection.Option}' is not an available option. {_availableFormOptionsMessage}");
 
-                        selectedItem?.Render();
+                        if (selectedItem != null)
+                        {
+                            // ToDo: Don't use magic strings
+                            if (selectedItem.Name == "Submit")
+                            {
+                                Submit();
+                            } else
+                            {
+                                var newData = selectedItem.Input?.Render();
+                                FormData[selectedItem.Name] = newData ?? "";
+                            }
+                        }
+
+                        foreach(var key in FormData.Keys)
+                        {
+                            ConsoleUI.WriteLine($"{key}: {FormData[key]}");
+                        }
                     }
                 } catch (Exception ex)
                 {
                     FormException = ex;
                     Selection = null;
                 }
-
-                ConsoleUI.WriteLine(_inputPrompt);
-                ConsoleUI.GetSelectionFromReadKey("Select a property from the menu to configure.");
-            } while (Selection == null);
+            } while (Selection == null || !IsSubmitted);
         }
 
-        protected void Add(FormInputDTO<TFormData> input) {
-            Count++;
-            _inputList.Add(new FormListItem(Count, input.Name, input.InputPrompt));
-        }
-
-        private void SetFormData()
+        protected void ResetFormData()
         {
-
+            FormData = [];
         }
 
-        private void Submit()
-        {
-
-        }
+        public abstract TFormData ParseFormData(Dictionary<string, string> rawFormData);
+        
+        public abstract Task Submit();
 
         protected FormSelection TryGetMenuSelectionFromConsoleKeyInfo(ConsoleKeyInfo selectionInput)
         {
@@ -134,7 +119,7 @@ namespace Garage.UI
                 return new FormSelection(option);
             return new FormSelection(option, found);
         }
-        protected static string BuildAvailableOptionsMessage(List<FormListItem> menuListItems)
+        protected static string BuildAvailableOptionsMessage(MenuList menuListItems)
         {
             if (menuListItems.Count < 1) return "";
             string firstOptionString = $"'{menuListItems.ToArray()[0].Option}'";

@@ -1,12 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Garage.UI
+﻿namespace Garage.UI
 {
     public abstract class ConsoleMenu<TProps> : IRender where TProps : class
     
