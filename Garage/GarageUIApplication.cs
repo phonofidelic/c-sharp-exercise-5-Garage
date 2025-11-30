@@ -16,6 +16,7 @@ namespace Garage
             {
                 try
                 {
+                   
                     mainMenu.Render();
                 } catch (Exception ex)
                 {

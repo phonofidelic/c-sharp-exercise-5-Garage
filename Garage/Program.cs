@@ -13,7 +13,6 @@ namespace Garage
             {
                 services.AddSingleton<MessageQueue>();
                 services.AddHostedService<ApplicationEventProcessorJob>();
-                services.AddSingleton<IGarageStore>(new Store("My Garage"));
                 services.AddSingleton<IEventBus, EventBus>();
                 services.AddSingleton<IApplicationRequest, ApplicationRequest>();
                 services.AddSingleton<IApplicationManager, ApplicationManager>();
@@ -22,10 +21,15 @@ namespace Garage
                 // Register event handlers
                 services.AddSingleton<CreateGarageRequestEventHandler>();
                 services.AddSingleton<CreateGarageResponseEventHandler>();
+                // Register data entities
+                services.AddSingleton<CreateGarageRequestDTO>();
+                //services.AddSingleton<Vehicle>();
+                services.AddSingleton<Garage.Garage<Vehicle>, Garage<Vehicle>>();
+                //services.AddSingleton<Garage.Garage<Vehicle>>();
                 // Register UI components
                 services.AddSingleton<MainMenu>();
                 services.AddSingleton<CreateNewGarageForm>();
-                //services.AddSingleton<GarageNameInput>();
+                services.AddSingleton<ListVehiclesMenu>();
                 services.AddSingleton<CreateGarageResponseSuccessScreen>();
             })
             .UseConsoleLifetime();

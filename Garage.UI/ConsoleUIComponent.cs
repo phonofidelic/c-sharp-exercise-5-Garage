@@ -8,17 +8,23 @@ namespace Garage.UI
 {
     public abstract class ConsoleUIComponent(
         string name,
+        string displayName,
         string description,
         string prompt
         ) : IRender
     {
-        public string Name { get; private set; } = name;
-        public string Description { get; private set; } = description;
+        public string Name { get; protected set; } = name;
+        public string DisplayName { get; protected set; } = displayName;
+        public string Description { get; protected set; } = description;
         public MenuSelection? Selection { get; protected set; } = null;
         protected string _availableOptionsMessage { get; set; } = "";
         protected MenuList _menuListItems { get; set; } = [];
         protected  readonly string _selectionPrompt = prompt;
 
+        public virtual void SetDisplayName(string newName)
+        {
+            DisplayName = new string(newName);
+        }
         public abstract void Render();
 
         protected MenuSelection TryGetMenuSelectionFromConsoleKeyInfo(ConsoleKeyInfo selectionInput)

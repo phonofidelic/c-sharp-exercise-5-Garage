@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 namespace Garage
 {
     internal class CreateGarageRequestEventHandler(
+        Garage<Vehicle> garage,
         IApplicationRequest request, 
         ILogger<CreateGarageRequestEventHandler> logger) 
         : ApplicationEventHandler<CreateGarageRequestEvent>(logger)
@@ -25,7 +26,8 @@ namespace Garage
                 Guid.NewGuid(),
                 Guid.NewGuid(),
                 ];
-
+            // Initialize the Garage
+            garage.Init(name, capacity);
 
             CancellationToken stoppingToken = new();
             _ = request.Publish(

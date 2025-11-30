@@ -16,10 +16,11 @@ namespace Garage.UI
 
         public ConsoleForm(
         string name,
+        string displayName,
         string description,
         string inputPrompt,
         IEnumerable<FormInputDTO> inputs
-        ) : base(name, description, inputPrompt)
+        ) : base(name, displayName, description, inputPrompt)
         {
             _formPrompt = inputPrompt;
             _menuListItems = new MenuList(inputs);
@@ -32,7 +33,7 @@ namespace Garage.UI
             do
             {
                 ConsoleUI.Clear();
-                ConsoleUI.WriteLine($"{Name}\n\n");
+                ConsoleUI.WriteLine($"{DisplayName}\n\n");
                 ConsoleUI.WriteLine($"{Description}\n");
                 foreach(var item in _menuListItems)
                 {
@@ -62,7 +63,6 @@ namespace Garage.UI
                         Selection = TryGetMenuSelectionFromConsoleKeyInfo(selectionInput);
                         if (Selection.Option.Equals(0))
                         {
-                            ResetFormData();
                             break;
                         }
 
@@ -77,7 +77,6 @@ namespace Garage.UI
                             {
                                 await Submit().ConfigureAwait(true);
                        
-                                ResetFormData();
                                 Selection = new(0);
                                 IsSubmitted = true;
                                 break;

@@ -11,6 +11,13 @@ public abstract class FormInput : IInput
     {
         Name = name;
         Description = description;
+        Value = null;
+    }
+    public FormInput(string name, string description, string defaultValue)
+    {
+        Name = name;
+        Description = description;
+        Value = defaultValue;
     }
 
     public void ResetValue()

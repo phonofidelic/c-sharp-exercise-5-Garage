@@ -1,21 +1,46 @@
-﻿using System.Collections;
+﻿using Garage.Library;
+using System.Collections;
 
-namespace Garage.Library
+namespace Garage
 {
-    public class Garage<T> : IEnumerable<T> where T : Vehicle
+    public class Garage<T> : ApplicationStorage<T>, IEnumerable<T>, IStorage<T> where T : Vehicle
     {
         public Guid Id { get; init; }
+        private string _name { get; set;}
+        public string Name
+        {
+            get => new(_name);
+            private set => _name = value;
+        }
         public int Capacity { get; private set; }
         public int Count { get; private set; }
         private Array _vehicles;
 
-        public Garage(int capacity)
+        public Garage()
         {
+            _name = "Default Garage";
+            Capacity = 50;
+            _vehicles = new Vehicle[50];
+        }
+
+        public void Init(string name, int capacity)
+        {
+            Name = name;
             Capacity = capacity;
             _vehicles = new Vehicle[capacity];
         }
 
-        public void Add(T vehicle)
+        public override List<T> GetAll()
+        {
+            List<T> tempList = [];
+            foreach (T vehicle in _vehicles)
+            {
+                tempList.Add(vehicle);
+            }
+            return tempList;
+        }
+
+        public override void Add(T vehicle)
         {
             if (Count < Capacity)
             {
@@ -42,7 +67,7 @@ namespace Garage.Library
         {
             int index = 0;
             object? itemAtIndex = null;
-            while(index < Capacity)
+            while (index < Capacity)
             {
                 itemAtIndex = _vehicles.GetValue(index);
                 if (itemAtIndex != null && itemAtIndex.Equals(vehicle))

@@ -12,13 +12,8 @@ namespace Garage
             {
                 var (name, capacity, vehicleIds) = props;
 
-                ConsoleUI.WriteLine(name);
-                ConsoleUI.WriteLine($"Capacity, {capacity}");
-                ConsoleUI.WriteLine("Vehicles:");
-                foreach (Guid vehicleId in vehicleIds)
-                {
-                    ConsoleUI.WriteLine($"\n\t{vehicleId}");
-                }
+                ConsoleUI.WriteLine($"Name: '{name}'");
+                ConsoleUI.WriteLine($"Capacity: {capacity}");
             }
             ConsoleUI.Continue();
         }

@@ -20,9 +20,11 @@ namespace Garage
             // Get UI components to render
             using IServiceScope scope = serviceScopeFactory.CreateScope();
             var successScreen = scope.ServiceProvider.GetRequiredService<CreateGarageResponseSuccessScreen>();
-            
+            var mainMenu = scope.ServiceProvider.GetRequiredService<MainMenu>();
+
             // Render UI for new Garage
             successScreen.RenderWithProps(Props);
+            mainMenu.SetDisplayName(Props.Name);
 
             // Reset handler state
             Props = null;

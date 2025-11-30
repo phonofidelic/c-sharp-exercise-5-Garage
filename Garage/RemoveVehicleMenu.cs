@@ -5,7 +5,8 @@ namespace Garage;
 
 internal class RemoveVehicleMenu(): ConsoleMenu
 (
-    name: "Remove vehicle", 
+    name: "Remove vehicle menu", 
+    displayName: "Remove vehicle", 
     description: "Select a vehicle to remove from the garage:", 
     [
         new("Vehicle ABC-123 (car)"), 

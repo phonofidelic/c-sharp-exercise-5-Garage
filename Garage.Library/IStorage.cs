@@ -6,8 +6,10 @@ using System.Threading.Tasks;
 
 namespace Garage.Library
 {
-    internal interface IStorage
+    public interface IStorage<TData>
     {
+        List<TData> GetAll();
 
+        void Add(TData data);
     }
 }

@@ -7,10 +7,11 @@
 
         public ConsoleMenu(
         string name,
+        string displayName,
         string description,
         IEnumerable<MenuItemDTO> menuListDtoItems,
         string selectionPrompt
-        ) : base(name, description, selectionPrompt)
+        ) : base(name, displayName, description, selectionPrompt)
         {
             _menuListItems = new MenuList(menuListDtoItems);
             _availableOptionsMessage = BuildAvailableOptionsMessage(_menuListItems);
@@ -20,7 +21,7 @@
             do
             {
                 ConsoleUI.Clear();
-                ConsoleUI.WriteLine($"{Name}\n\n");
+                ConsoleUI.WriteLine($"{DisplayName}\n\n");
                 ConsoleUI.WriteLine($"{Description}\n");
                 foreach (var item in _menuListItems)
                 {

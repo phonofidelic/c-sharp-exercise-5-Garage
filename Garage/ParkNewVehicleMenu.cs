@@ -1,11 +1,13 @@
-using System;
 using Garage.UI;
+using System;
+using System.Diagnostics.Metrics;
 
 namespace Garage;
 
 internal class ParkNewVehicleMenu(): ConsoleMenu
 (
-    name: "Enter vehicle details", 
+    name: "Add new vehicle menu", 
+    displayName: "Enter vehicle details",
     description: "", 
     [ 
         new("Enter VIN:"), 

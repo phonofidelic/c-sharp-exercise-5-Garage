@@ -8,9 +8,11 @@ namespace Garage
     {
         private IApplicationRequest _request;
         public CreateNewGarageForm(
+            Garage<Vehicle> garage,
             IApplicationRequest request)
         : base(
-            name: "Create a new Garage",
+            name: "Create Garage Form",
+            displayName: "Create a new Garage",
             description: "Initialize a new Garage by giving it a name and indicating its capacity.",
             inputs: [],
             inputPrompt: "Select a property from the menu to configure."
@@ -21,12 +23,12 @@ namespace Garage
             _menuListItems.Add(new FormInputDTO(
                 "Name", 
                 "Enter a name for your new garage:",
-                new FormTextInput("Name",  "Enter a name for your new garage:")));
+                new FormTextInput("Name",  "Enter a name for your new garage:", garage.Name)));
 
             _menuListItems.Add(new FormInputDTO(
                 "Capacity",
                 "Enter the maximum capacity of your garage:",
-                new FormTextInput("Capacity", "Enter the maximum capacity of your garage:")));
+                new FormTextInput("Capacity", "Enter the maximum capacity of your garage:", garage.Capacity.ToString())));
 
             _menuListItems.Add(new FormInputDTO(
                 "Submit",

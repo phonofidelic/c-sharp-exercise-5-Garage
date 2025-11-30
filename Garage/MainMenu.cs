@@ -1,9 +1,19 @@
+using Garage.Library;
 using Garage.UI;
 
 namespace Garage;
 
-internal class MainMenu(CreateNewGarageForm createNewGarageMenu) : ConsoleMenu(
-    name: "Main menu",
+internal class MainMenu : ConsoleMenu
+{
+
+    public MainMenu(
+        Garage<Vehicle> garage,
+    CreateNewGarageForm createNewGarageMenu,
+    ListVehiclesMenu listVehiclesMenu
+    )
+        : base(
+    name: "Main Menu",
+    displayName: garage.Name,
     description: "Use the menu to make a selection:",
     menuListDtoItems: [
                     new(
@@ -12,7 +22,7 @@ internal class MainMenu(CreateNewGarageForm createNewGarageMenu) : ConsoleMenu(
                     ),
                     new(
                         name: "List parked vehicles",
-                        children: new ListVehiclesMenu()
+                        children: listVehiclesMenu
                     ),
                     new(
                         name: "Park a new vehicle",
@@ -25,6 +35,7 @@ internal class MainMenu(CreateNewGarageForm createNewGarageMenu) : ConsoleMenu(
                 ],
     selectionPrompt: "Select an option from the menu. \nPress 'Esc.' to quit the application"
     )
-{}
+    { }
+}
 
 public record MainMenuDTO();
