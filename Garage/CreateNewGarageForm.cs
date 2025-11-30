@@ -4,7 +4,7 @@ using Garage.UI;
 namespace Garage
 {
     internal class CreateNewGarageForm 
-        : ConsoleForm<CreateGarageRequestDTO>
+        : ConsoleForm<CreateGarageRequestDTO>, IRender
     {
         private IApplicationRequest _request;
         public CreateNewGarageForm(
@@ -17,9 +17,6 @@ namespace Garage
         )
         {
             _request = request;
-
-            FormData["Name"] = null;
-            FormData["Capacity"] = null;
              
             _menuListItems.Add(new FormInputDTO(
                 "Name", 
@@ -51,22 +48,9 @@ namespace Garage
 
         public override async Task Submit()
         {
-            try
-            {
-                var parsedFormData = ParseFormData(FormData) ?? throw new Exception($"Form data is incomplete: {FormData}");
-                CancellationToken stoppingToken = new();
-                await _request.Publish(new CreateGarageRequestEvent(parsedFormData), stoppingToken);
-                
-                // Form was submitted successfully
-                //ResetFormData();
-                //IsSubmitted = true;
-                //ConsoleUI.Clear();
-                //ConsoleUI.WriteLine("New garage was created successfully");
-                //ConsoleUI.Continue();
-            } catch (Exception ex)
-            {
-                FormException = ex;
-            }
+            var parsedFormData = ParseFormData(FormData) ?? throw new Exception($"Form data is incomplete: {FormData}");
+            CancellationToken stoppingToken = new();
+            await _request.Publish(new CreateGarageRequestEvent(parsedFormData), stoppingToken);
         }
     }
 }

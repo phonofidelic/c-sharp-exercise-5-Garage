@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Garage.UI
 {
-    public abstract class ConsoleForm<TFormData> : IRender where TFormData : class
+    public abstract class ConsoleForm<TFormData> : IRender, IRenderAsync where TFormData : class
     {
         public string Name { get; private set; }
         public string Description { get; private set; }
@@ -34,7 +34,7 @@ namespace Garage.UI
             _availableFormOptionsMessage = BuildAvailableOptionsMessage(_menuListItems);
         }
 
-        public void Render()
+        public async Task RenderAsync()
         {
             do
             {
@@ -69,6 +69,7 @@ namespace Garage.UI
                         Selection = TryGetMenuSelectionFromConsoleKeyInfo(selectionInput);
                         if (Selection.Option.Equals(0))
                         {
+                            ResetFormData();
                             break;
                         }
 
@@ -81,29 +82,17 @@ namespace Garage.UI
                             // ToDo: Don't use magic strings
                             if (selectedItem.Name == "Submit")
                             {
-                                try
-                                {
-                                    Submit();
-                                    // Reset FormData
-                                    ResetFormData();
-                                    Selection = new(0);
-                                    IsSubmitted = true;
-                                    break;
-                                } catch
-                                {
-                                    throw;
-                                }
-
+                                await Submit().ConfigureAwait(true);
+                       
+                                ResetFormData();
+                                Selection = new(0);
+                                IsSubmitted = true;
+                                break;
                             } else
                             {
                                 var newData = selectedItem.Input?.Render();
                                 FormData[selectedItem.Name] = newData ?? "";
                             }
-                        }
-
-                        foreach(var key in FormData.Keys)
-                        {
-                            ConsoleUI.WriteLine($"{key}: {FormData[key]}");
                         }
                     }
                 } catch (Exception ex)
@@ -168,6 +157,11 @@ namespace Garage.UI
                 }
             }
             return availableOptionsString;
+        }
+
+        public void Render()
+        {
+            _ = RenderAsync();
         }
     }
 }
