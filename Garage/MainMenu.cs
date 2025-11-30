@@ -9,7 +9,8 @@ internal class MainMenu : ConsoleMenu
     public MainMenu(
         Garage<Vehicle> garage,
     CreateNewGarageForm createNewGarageMenu,
-    ListVehiclesMenu listVehiclesMenu
+    ListVehiclesMenu listVehiclesMenu,
+    ParkNewVehicleForm parkNewVehicleForm
     )
         : base(
     name: "Main Menu",
@@ -26,7 +27,7 @@ internal class MainMenu : ConsoleMenu
                     ),
                     new(
                         name: "Park a new vehicle",
-                        children: new ParkNewVehicleMenu()
+                        children: parkNewVehicleForm
                     ),
                     new(
                         name: "Remove a parked vehicle",

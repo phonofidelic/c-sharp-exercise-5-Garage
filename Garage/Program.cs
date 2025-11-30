@@ -23,13 +23,12 @@ namespace Garage
                 services.AddSingleton<CreateGarageResponseEventHandler>();
                 // Register data entities
                 services.AddSingleton<CreateGarageRequestDTO>();
-                //services.AddSingleton<Vehicle>();
                 services.AddSingleton<Garage.Garage<Vehicle>, Garage<Vehicle>>();
-                //services.AddSingleton<Garage.Garage<Vehicle>>();
                 // Register UI components
                 services.AddSingleton<MainMenu>();
                 services.AddSingleton<CreateNewGarageForm>();
                 services.AddSingleton<ListVehiclesMenu>();
+                services.AddSingleton<ParkNewVehicleForm>();
                 services.AddSingleton<CreateGarageResponseSuccessScreen>();
             })
             .UseConsoleLifetime();

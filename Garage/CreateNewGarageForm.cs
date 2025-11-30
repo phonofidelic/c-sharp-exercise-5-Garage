@@ -21,19 +21,21 @@ namespace Garage
             _request = request;
              
             _menuListItems.Add(new FormInputDTO(
-                "Name", 
-                "Enter a name for your new garage:",
-                new FormTextInput("Name",  "Enter a name for your new garage:", garage.Name)));
+                name: "Name", 
+                description: "Enter a name for your new garage:",
+                type: FormInputType.Text,
+                defaultValue: garage.Name));
 
             _menuListItems.Add(new FormInputDTO(
-                "Capacity",
-                "Enter the maximum capacity of your garage:",
-                new FormTextInput("Capacity", "Enter the maximum capacity of your garage:", garage.Capacity.ToString())));
+                name: "Capacity",
+                description: "Enter the maximum capacity of your garage:",
+                type: FormInputType.Text,
+                defaultValue: garage.Capacity.ToString()));
 
             _menuListItems.Add(new FormInputDTO(
-                "Submit",
-                "Submit",
-                new FormSubmit("Submit", "Submit")));
+                name: "Submit",
+                description: "Re-initialize the garage",
+                type: FormInputType.Submit));
         }
 
         public override CreateGarageRequestDTO ParseFormData(Dictionary<string, string> rawFormData)

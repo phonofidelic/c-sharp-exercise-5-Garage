@@ -10,7 +10,7 @@ namespace Garage
             ConsoleUI.WriteLineInfo("New Garage created:\n");
             if (props != null)
             {
-                var (name, capacity, vehicleIds) = props;
+                var (name, capacity) = props;
 
                 ConsoleUI.WriteLine($"Name: '{name}'");
                 ConsoleUI.WriteLine($"Capacity: {capacity}");

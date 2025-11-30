@@ -41,8 +41,32 @@ namespace Garage.UI
 
         public void Add(FormInputDTO item)
         {
+            FormInput input;
+            switch (item.Type)
+            {
+                case FormInputType.Text:
+                    input = new FormTextInput(
+                        item.Name,
+                        item.Description,
+                        item.DefaultValue ?? "");
+                break;
+
+                case FormInputType.Submit:
+                    input = new FormSubmit(
+                        item.Name ?? "Submit",
+                        item.Description ?? "Submit form");
+                break;
+
+                default:
+                    throw new NotImplementedException();
+            }
+
             Count++;
-            _list.Add(new MenuListItem(Count, item.Name, item.Description, item.Input));
+            _list.Add(new MenuListItem(
+                Count, 
+                input.Name, 
+                input.Description, 
+                input));
         }
 
         public IEnumerator<MenuListItem> GetEnumerator()

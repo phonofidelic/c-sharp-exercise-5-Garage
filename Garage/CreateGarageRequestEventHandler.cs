@@ -20,18 +20,13 @@ namespace Garage
             logger.LogInformation("Payload: {Payload}", @event.Payload);
             CreateGarageRequestDTO parsedPayload = (CreateGarageRequestDTO)@event.Payload;
             var (name, capacity) = parsedPayload;
-            // Fake list of vehicle IDs
-            List<Guid> vehicles = [
-                Guid.NewGuid(),
-                Guid.NewGuid(),
-                Guid.NewGuid(),
-                ];
-            // Initialize the Garage
+       
+            // Re-initialize the Garage
             garage.Init(name, capacity);
 
             CancellationToken stoppingToken = new();
             _ = request.Publish(
-                new CreateGarageResponseEvent(new CreateGarageResponseDTO(name, capacity, vehicles)),
+                new CreateGarageResponseEvent(new CreateGarageResponseDTO(name, capacity)),
                 stoppingToken);
         }
 
