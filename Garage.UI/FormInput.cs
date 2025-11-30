@@ -12,5 +12,10 @@ public abstract class FormInput : IInput
         Name = name;
         Description = description;
     }
+
+    public void ResetValue()
+    {
+        Value = null;
+    }
     public abstract string? Render();
 }

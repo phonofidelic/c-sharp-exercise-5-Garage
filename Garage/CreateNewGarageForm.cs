@@ -21,17 +21,17 @@ namespace Garage
             FormData["Name"] = null;
             FormData["Capacity"] = null;
              
-            _inputList.Add(new FormInputDTO(
+            _menuListItems.Add(new FormInputDTO(
                 "Name", 
                 "Enter a name for your new garage:",
                 new FormTextInput("Name",  "Enter a name for your new garage:")));
 
-            _inputList.Add(new FormInputDTO(
+            _menuListItems.Add(new FormInputDTO(
                 "Capacity",
                 "Enter the maximum capacity of your garage:",
                 new FormTextInput("Capacity", "Enter the maximum capacity of your garage:")));
 
-            _inputList.Add(new FormInputDTO(
+            _menuListItems.Add(new FormInputDTO(
                 "Submit",
                 "Submit",
                 new FormSubmit("Submit", "Submit")));

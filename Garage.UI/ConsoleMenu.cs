@@ -43,7 +43,6 @@
 
             try
             {   
-                
                 var selectionInput = ConsoleUI.GetSelectionFromReadKey(_selectionPrompt);
                 MenuException = null;
                 

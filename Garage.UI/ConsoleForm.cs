@@ -13,7 +13,7 @@ namespace Garage.UI
         public string Description { get; private set; }
         protected MenuSelection? Selection { get; set; }
         protected Exception? FormException { get; set; } = null;
-        protected MenuList _inputList = [];
+        protected MenuList _menuListItems { get; set; }
         public Dictionary<string, string> FormData { get; protected set; } = [];
         private string _formPrompt { get; set; }
         protected readonly string _availableFormOptionsMessage;
@@ -29,9 +29,9 @@ namespace Garage.UI
             Name = name;
             Description = description;
             _formPrompt = inputPrompt;
-            _inputList = new MenuList(inputs);
+            _menuListItems = new MenuList(inputs);
 
-            _availableFormOptionsMessage = BuildAvailableOptionsMessage(_inputList);
+            _availableFormOptionsMessage = BuildAvailableOptionsMessage(_menuListItems);
         }
 
         public void Render()
@@ -41,14 +41,14 @@ namespace Garage.UI
                 ConsoleUI.Clear();
                 ConsoleUI.WriteLine($"{Name}\n\n");
                 ConsoleUI.WriteLine($"{Description}\n");
-                foreach(var item in _inputList)
+                foreach(var item in _menuListItems)
                 {
                     item.Render();
                 }
 
                 // Display current form values
                 ConsoleUI.WriteLine();
-                foreach (var item in _inputList)
+                foreach (var item in _menuListItems)
                 {
                     // ToDo: Don't use magic strings
                     if (item.Name != "Submit") ConsoleUI.WriteLine($"\t{item.Name}: {item.Input?.Value}");
@@ -64,7 +64,7 @@ namespace Garage.UI
                     var selectionInput = ConsoleUI.GetSelectionFromReadKey(_formPrompt);
                     FormException = null;
 
-                    if (_inputList.Count > 0)
+                    if (_menuListItems.Count > 0)
                     {
                         Selection = TryGetMenuSelectionFromConsoleKeyInfo(selectionInput);
                         if (Selection.Option.Equals(0))
@@ -72,7 +72,7 @@ namespace Garage.UI
                             break;
                         }
 
-                        var selectedItem = _inputList
+                        var selectedItem = _menuListItems
                         .FirstOrDefault(item => item.Option.Equals(Selection.Option)) ??
                             throw new Exception($"'{Selection.Option}' is not an available option. {_availableFormOptionsMessage}");
 
@@ -119,6 +119,10 @@ namespace Garage.UI
         protected void ResetFormData()
         {
             FormData = [];
+            foreach(var item in _menuListItems)
+            {
+                item.Input?.ResetValue();
+            }
         }
 
         public abstract TFormData ParseFormData(Dictionary<string, string> rawFormData);
@@ -136,7 +140,7 @@ namespace Garage.UI
             if (!int.TryParse(inputChar.ToString(), out int option))
                 throw new Exception($"'{inputChar}' is not an available option. Please use a number to make a selection from the list.");
 
-            var found = _inputList.FirstOrDefault(item => item.Option.Equals(option));
+            var found = _menuListItems.FirstOrDefault(item => item.Option.Equals(option));
             if (found == null)
                 return new MenuSelection(option);
             return new MenuSelection(option, found);
