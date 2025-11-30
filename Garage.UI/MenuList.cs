@@ -1,33 +1,11 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections;
 
 namespace Garage.UI
 {
-    public class MenuItemDTO
-{
-    public string Name { get; private set; }
-    public IRender? Children { get; private set; }
-
-    public MenuItemDTO(string name, IRender children)
-    {
-        Name = name;
-        Children = children;
-    }
-    public MenuItemDTO(string name)
-    {
-        Name = name;
-        Children = null;
-    }
-}
     public class MenuList : IEnumerable<MenuListItem>
     {
         public int Count { get; private set; } = 0;        
         private readonly List<MenuListItem> _list;
-
 
         public MenuList()
         {
@@ -43,6 +21,15 @@ namespace Garage.UI
             }
         }
 
+        public MenuList(IEnumerable<FormInputDTO> items)
+        {
+            _list = [];
+            foreach(FormInputDTO item in items)
+            {
+                Add(item);
+            }
+        }
+
         public void Add(MenuItemDTO item)
         {
             Count++;
@@ -50,6 +37,12 @@ namespace Garage.UI
                 _list.Add(new MenuListItem(Count, item.Name, item.Children));
             else
                 _list.Add(new MenuListItem(Count, item.Name));
+        }
+
+        public void Add(FormInputDTO item)
+        {
+            Count++;
+            _list.Add(new MenuListItem(Count, item.Name, item.Description, item.Input));
         }
 
         public IEnumerator<MenuListItem> GetEnumerator()

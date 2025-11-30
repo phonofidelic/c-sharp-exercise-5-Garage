@@ -1,16 +1,14 @@
 using Garage.UI;
 
-
 namespace Garage;
 
-
-internal class MainMenu(CreateGarageMenu createGarageMenu) : ConsoleMenu(
+internal class MainMenu(CreateNewGarageForm createNewGarageMenu) : ConsoleMenu(
     name: "Main menu",
     description: "Use the menu to make a selection:",
     menuListDtoItems: [
                     new(
                         name: "Create new Garage",
-                        children: createGarageMenu
+                        children: createNewGarageMenu
                     ),
                     new(
                         name: "List parked vehicles",
@@ -27,6 +25,6 @@ internal class MainMenu(CreateGarageMenu createGarageMenu) : ConsoleMenu(
                 ],
     selectionPrompt: "Select an option from the menu. \nPress 'Esc.' to quit the application"
     )
-{
-    
-}
+{}
+
+public record MainMenuDTO();

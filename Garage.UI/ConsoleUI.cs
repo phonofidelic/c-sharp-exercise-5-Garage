@@ -58,5 +58,11 @@ namespace Garage.UI
             Console.WriteLine($"\n{message}");
             Console.ResetColor();
         }
+
+        public static string? GetInputFromReadLine(string message)
+        {
+            Console.WriteLine(message);
+            return Console.ReadLine();
+        }
     }
 }
