@@ -6,7 +6,7 @@
         public int Option { get; private set; }
         public string? Description { get; private set; }
         public IRender? Children { get; private set; }
-        public IInput? Input { get; private set; }
+        public FormInput? Input { get; private set; }
 
         public MenuListItem(int option, string name, IRender children)
         {
@@ -16,7 +16,7 @@
             Input = null;
         }
 
-        public MenuListItem(int option, string name, string description, IInput input)
+        public MenuListItem(int option, string name, string description, FormInput input)
         {
             Name = name;
             Option = option;

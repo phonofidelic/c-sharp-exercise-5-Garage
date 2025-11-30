@@ -4,7 +4,7 @@ using Garage.UI;
 namespace Garage
 {
     internal class CreateNewGarageForm 
-        : Form<CreateGarageRequestDTO>
+        : ConsoleForm<CreateGarageRequestDTO>
     {
         private IApplicationRequest _request;
         public CreateNewGarageForm(
@@ -58,11 +58,11 @@ namespace Garage
                 await _request.Publish(new CreateGarageRequestEvent(parsedFormData), stoppingToken);
                 
                 // Form was submitted successfully
-                ResetFormData();
-                IsSubmitted = true;
-                ConsoleUI.Clear();
-                ConsoleUI.WriteLine("New garage was created successfully");
-                ConsoleUI.Continue();
+                //ResetFormData();
+                //IsSubmitted = true;
+                //ConsoleUI.Clear();
+                //ConsoleUI.WriteLine("New garage was created successfully");
+                //ConsoleUI.Continue();
             } catch (Exception ex)
             {
                 FormException = ex;

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Garage.UI
 {
-    public abstract class Form<TFormData> : IRender where TFormData : class
+    public abstract class ConsoleForm<TFormData> : IRender where TFormData : class
     {
         public string Name { get; private set; }
         public string Description { get; private set; }
@@ -19,7 +19,7 @@ namespace Garage.UI
         protected readonly string _availableFormOptionsMessage;
         protected bool IsSubmitted { get; set; } = false;
 
-        public Form(
+        public ConsoleForm(
         string name,
         string description,
         string inputPrompt,
@@ -44,6 +44,14 @@ namespace Garage.UI
                 foreach(var item in _inputList)
                 {
                     item.Render();
+                }
+
+                // Display current form values
+                ConsoleUI.WriteLine();
+                foreach (var item in _inputList)
+                {
+                    // ToDo: Don't use magic strings
+                    if (item.Name != "Submit") ConsoleUI.WriteLine($"\t{item.Name}: {item.Input?.Value}");
                 }
 
                 if (FormException != null)
@@ -73,7 +81,19 @@ namespace Garage.UI
                             // ToDo: Don't use magic strings
                             if (selectedItem.Name == "Submit")
                             {
-                                Submit();
+                                try
+                                {
+                                    Submit();
+                                    // Reset FormData
+                                    ResetFormData();
+                                    Selection = new(0);
+                                    IsSubmitted = true;
+                                    break;
+                                } catch
+                                {
+                                    throw;
+                                }
+
                             } else
                             {
                                 var newData = selectedItem.Input?.Render();
@@ -91,6 +111,8 @@ namespace Garage.UI
                     FormException = ex;
                     Selection = null;
                 }
+                if (Selection?.Option > 0)
+                    Selection = null;
             } while (Selection == null || !IsSubmitted);
         }
 
