@@ -17,11 +17,9 @@ namespace Garage
         // Return index position in Garage
         public abstract int Park();
     }
-    public abstract record VehicleProperties()
-    {
-        string Make;
-        string Vin;
-        string Color;
-    }
+    public abstract record VehicleProperties(
+        string Make,
+        string VIN,
+        string Color);
 }
 

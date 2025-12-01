@@ -69,6 +69,11 @@ namespace Garage.UI
                 input));
         }
 
+        public List<MenuListItem> ToList()
+        {
+            return [.. _list];
+        }
+
         public IEnumerator<MenuListItem> GetEnumerator()
         {
             foreach (MenuListItem item in _list)

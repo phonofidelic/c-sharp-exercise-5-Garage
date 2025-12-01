@@ -14,6 +14,8 @@ namespace Garage.UI
         public Exception? FormException { get; protected set; } = null;
         protected bool IsSubmitted { get; set; } = false;
 
+        protected List<FormInputDTO> FormInputs { get; set; } = [];
+
         public ConsoleForm(
         string name,
         string displayName,
@@ -23,9 +25,9 @@ namespace Garage.UI
         ) : base(name, displayName, description, inputPrompt)
         {
             _formPrompt = inputPrompt;
-            _menuListItems = new MenuList(inputs);
+            SetFormInputs(inputs);
 
-            _availableOptionsMessage = BuildAvailableOptionsMessage(_menuListItems);
+            _availableOptionsMessage = BuildAvailableOptionsMessage(MenuListItems);
         }
 
         public async Task RenderAsync()
@@ -35,14 +37,14 @@ namespace Garage.UI
                 ConsoleUI.Clear();
                 ConsoleUI.WriteLine($"{DisplayName}\n\n");
                 ConsoleUI.WriteLine($"{Description}\n");
-                foreach(var item in _menuListItems)
+                foreach(var item in MenuListItems)
                 {
                     item.Render();
                 }
 
                 // Display current form values
                 ConsoleUI.WriteLine();
-                foreach (var item in _menuListItems)
+                foreach (var item in MenuListItems)
                 {
                     // ToDo: Don't use magic strings
                     if (item.Name != "Submit") ConsoleUI.WriteLine($"\t{item.Name}: {item.Input?.Value}");
@@ -58,7 +60,7 @@ namespace Garage.UI
                     var selectionInput = ConsoleUI.GetSelectionFromReadKey(_formPrompt);
                     FormException = null;
 
-                    if (_menuListItems.Count > 0)
+                    if (MenuListItems.Count > 0)
                     {
                         Selection = TryGetMenuSelectionFromConsoleKeyInfo(selectionInput);
                         if (Selection.Option.Equals(0))
@@ -66,7 +68,7 @@ namespace Garage.UI
                             break;
                         }
 
-                        var selectedItem = _menuListItems
+                        var selectedItem = MenuListItems
                         .FirstOrDefault(item => item.Option.Equals(Selection.Option)) ??
                             throw new Exception($"'{Selection.Option}' is not an available option. {_availableOptionsMessage}");
 
@@ -100,7 +102,7 @@ namespace Garage.UI
         protected void ResetFormData()
         {
             FormData = [];
-            foreach(var item in _menuListItems)
+            foreach(var item in MenuListItems)
             {
                 item.Input?.ResetValue();
             }

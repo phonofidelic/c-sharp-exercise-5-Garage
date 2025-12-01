@@ -1,5 +1,12 @@
 ﻿namespace Garage
 {
-    internal record ParkNewVehicleDTO() : VehicleProperties
-    { }
+    public record ParkNewVehicleDTO(
+        string Make,
+        string VIN,
+        string Color)
+        : VehicleProperties(
+            Make,
+            VIN,
+            Color)
+    { };
 }

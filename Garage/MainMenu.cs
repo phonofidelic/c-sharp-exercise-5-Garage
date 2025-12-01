@@ -16,7 +16,7 @@ internal class MainMenu : ConsoleMenu
     name: "Main Menu",
     displayName: garage.Name,
     description: "Use the menu to make a selection:",
-    menuListDtoItems: [
+    menuItems: [
                     new(
                         name: "Create new Garage",
                         children: createNewGarageMenu

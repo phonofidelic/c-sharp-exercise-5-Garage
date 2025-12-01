@@ -9,12 +9,12 @@
         string name,
         string displayName,
         string description,
-        IEnumerable<MenuItemDTO> menuListDtoItems,
+        IEnumerable<MenuItemDTO> menuItems,
         string selectionPrompt
         ) : base(name, displayName, description, selectionPrompt)
         {
-            _menuListItems = new MenuList(menuListDtoItems);
-            _availableOptionsMessage = BuildAvailableOptionsMessage(_menuListItems);
+            SetMenuItems(menuItems);
+            _availableOptionsMessage = BuildAvailableOptionsMessage(MenuListItems);
         }
         public override void Render()
         {
@@ -23,7 +23,7 @@
                 ConsoleUI.Clear();
                 ConsoleUI.WriteLine($"{DisplayName}\n\n");
                 ConsoleUI.WriteLine($"{Description}\n");
-                foreach (var item in _menuListItems)
+                foreach (var item in MenuListItems)
                 {
                     item.Render();
                 }
@@ -38,7 +38,7 @@
                     var selectionInput = ConsoleUI.GetSelectionFromReadKey(_selectionPrompt);
                     MenuException = null;
 
-                    if (_menuListItems.Count > 0)
+                    if (MenuListItems.Count > 0)
                     {
                         Selection = TryGetMenuSelectionFromConsoleKeyInfo(selectionInput);
                         if (Selection.Option.Equals(0))
@@ -46,7 +46,7 @@
                             break;
                         }
 
-                        var selectedItem = _menuListItems
+                        var selectedItem = MenuListItems
                         .FirstOrDefault(item => item.Option.Equals(Selection.Option)) ??
                             throw new Exception($"'{Selection.Option}' is not an available option. {_availableOptionsMessage}");
 
@@ -54,7 +54,7 @@
                     }
 
                     // If the current menu has no children...
-                    if (_menuListItems.Count == 0)
+                    if (MenuListItems.Count == 0)
                         // Go back to previous screen
                         Selection = new MenuSelection(0);
                 }

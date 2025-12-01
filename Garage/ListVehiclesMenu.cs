@@ -11,16 +11,26 @@ internal class ListVehiclesMenu: ConsoleMenu
     name: "Parked Vehicles",
     displayName: "Parked Vehicles",
     description: "Showing all vehicles currently parked in the garage:",
-    menuListDtoItems:
-    [
-        new("Vehicle ABC-123 (car)"),
-        new("Vehicle DEF-456 (bus)"),
-        new("Vehicle GHI-789 (bike)"),
-    ],
+    menuItems: [],
     selectionPrompt: "Press 'Esc.' to go back"
 )
     {
         // Get parked Vehicles from storage
-        // Garage.ListAll()
+        List<Vehicle> vehicles = garage.GetAll();
+
+        foreach(Vehicle vehicle in vehicles)
+        {
+            if (vehicle != null) {
+                ListParkedVehiclesDTO props = (ListParkedVehiclesDTO)vehicle.Props;
+            
+                var (Make, VIN, Color) = props;
+
+                string menuItemName = $"VIN: {VIN}\tModel: {Make}\tColor: {Color}";
+                AddMenuItem(new MenuItemDTO(
+                    name: menuItemName));
+            }
+            
+        }
+
     }
 }

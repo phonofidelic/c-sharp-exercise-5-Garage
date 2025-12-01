@@ -16,15 +16,51 @@ namespace Garage.UI
         public string Name { get; protected set; } = name;
         public string DisplayName { get; protected set; } = displayName;
         public string Description { get; protected set; } = description;
+
+        
         public MenuSelection? Selection { get; protected set; } = null;
         protected string _availableOptionsMessage { get; set; } = "";
-        protected MenuList _menuListItems { get; set; } = [];
+        private MenuList _menuListItems { get; set; } = [];
+        protected List<MenuListItem> MenuListItems { 
+            get => _menuListItems.ToList(); 
+        }
+        
         protected  readonly string _selectionPrompt = prompt;
 
+        protected List<MenuListItem> GetMenuItems()
+        {
+            return _menuListItems.ToList();
+        }
         public virtual void SetDisplayName(string newName)
         {
             DisplayName = new string(newName);
         }
+
+        public virtual void SetMenuItems(IEnumerable<MenuItemDTO> items)
+        {
+            foreach (MenuItemDTO item in items) {
+                _menuListItems.Add(item);
+            }
+        }
+
+        public void SetFormInputs(IEnumerable<FormInputDTO> items)
+        {
+            foreach (FormInputDTO item in items)
+            {
+                _menuListItems.Add(item);
+            }
+        }
+
+        public virtual void AddMenuItem(MenuItemDTO item)
+        {
+            _menuListItems.Add(item);
+        }
+
+        protected void AddMenuItem(FormInputDTO input)
+        {
+            _menuListItems.Add(input);
+        }
+
         public abstract void Render();
 
         protected MenuSelection TryGetMenuSelectionFromConsoleKeyInfo(ConsoleKeyInfo selectionInput)
@@ -43,7 +79,7 @@ namespace Garage.UI
                 return new MenuSelection(option);
             return new MenuSelection(option, found);
         }
-        protected static string BuildAvailableOptionsMessage(MenuList menuListItems)
+        protected static string BuildAvailableOptionsMessage(List<MenuListItem> menuListItems)
         {
             if (menuListItems.Count < 1) return "";
             string firstOptionString = $"'{menuListItems.ToArray()[0].Option}'";

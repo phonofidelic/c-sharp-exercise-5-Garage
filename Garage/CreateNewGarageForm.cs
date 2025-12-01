@@ -19,20 +19,20 @@ namespace Garage
         )
         {
             _request = request;
-             
-            _menuListItems.Add(new FormInputDTO(
+
+            AddMenuItem(new FormInputDTO(
                 name: "Name", 
                 description: "Enter a name for your new garage:",
                 type: FormInputType.Text,
                 defaultValue: garage.Name));
 
-            _menuListItems.Add(new FormInputDTO(
+            AddMenuItem(new FormInputDTO(
                 name: "Capacity",
                 description: "Enter the maximum capacity of your garage:",
                 type: FormInputType.Text,
                 defaultValue: garage.Capacity.ToString()));
 
-            _menuListItems.Add(new FormInputDTO(
+            AddMenuItem(new FormInputDTO(
                 name: "Submit",
                 description: "Re-initialize the garage",
                 type: FormInputType.Submit));
