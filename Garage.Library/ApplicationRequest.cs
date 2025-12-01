@@ -14,5 +14,10 @@ namespace Garage.Library
         {
             return _eventBus.PublishAsync(appEvent, stoppingToken);
         }
+
+        public bool TryPublish(ApplicationEvent appEvent)
+        {
+            return _eventBus.TryPublish(appEvent);
+        }
     }
 }

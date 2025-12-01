@@ -23,16 +23,23 @@ namespace Garage
             // Reset the menu items list
             listParkedVehiclesMenu.ResetMenuItems();
             
+            static string FormatRow(string col1, string col2, string col3) => 
+                String.Format("{0,-16}{1,-16}{2,-16}", col1, col2, col3) ;
             // Add menu items to the list
             for (int i = 0; i < garage.Count; i++)
             {
                 Vehicle vehicle = vehicles.Dequeue();
                 if (vehicle != null)
                     listParkedVehiclesMenu.AddMenuItem(new MenuItemDTO(
-                        name: $"Make: {vehicle.Props.Make}\tColor: {vehicle.Props.Color}\t Type: {vehicle.Props.Type}"));
+                        name: FormatRow(vehicle.Props.Make, vehicle.Props.Color, vehicle.Props.Type.ToString())));
             }
+            listParkedVehiclesMenu.SetDescription(
+                "Showing all vehicles currently parked in the garage:" + 
+                "\n\n\t" +
+                FormatRow("Make:", "Color:", "Type:") +
+                "\n____________________________________________________");
             // Render the list
-            listParkedVehiclesMenu.Render();
+            // listParkedVehiclesMenu.Render();
         }
 
         public override void SetNext(IHandler handler)

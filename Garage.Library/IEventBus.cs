@@ -5,5 +5,7 @@
         Task PublishAsync(
             ApplicationEvent applicationEvent,
             CancellationToken cancellationToken = default);
+
+        bool TryPublish(ApplicationEvent applicationEvent);
     }
 }

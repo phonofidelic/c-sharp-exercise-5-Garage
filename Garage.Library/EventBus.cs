@@ -9,5 +9,10 @@ namespace Garage.Library
         {
             await queue.Writer.WriteAsync(applicationEvent, cancellationToken);
         }
+
+        public bool TryPublish(ApplicationEvent applicationEvent)
+        {
+            return queue.Writer.TryWrite(applicationEvent);
+        }
     }
 }

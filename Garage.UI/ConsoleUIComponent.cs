@@ -34,6 +34,11 @@ namespace Garage.UI
             DisplayName = new string(newName);
         }
 
+        public void SetDescription(string description)
+        {
+            Description = description;
+        }
+
         public virtual void ResetMenuSelection() => Selection = null;
 
         public virtual void ResetMenuItems()
@@ -41,11 +46,12 @@ namespace Garage.UI
             _menuListItems = [];
         }
 
-        public virtual void SetMenuItems(IEnumerable<MenuItemDTO> items)
+        public virtual List<MenuListItem> SetMenuItems(IEnumerable<MenuItemDTO> items)
         {
             foreach (MenuItemDTO item in items) {
                 _menuListItems.Add(item);
             }
+            return _menuListItems.ToList();
         }
 
         public void SetFormInputs(IEnumerable<FormInputDTO> items)

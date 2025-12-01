@@ -11,15 +11,25 @@ namespace Garage
 {
     internal class ListVehiclesView(
         IApplicationRequest request,
-         ListVehiclesMenu listParkedVehiclesMenu) : IRender
+         ListVehiclesMenu listParkedVehiclesMenu) : IRender, IRenderAsync
     {
         public void Render()
         {
-            CancellationToken stoppingToken = new();
-            _ = RequestVehiclesAsync(stoppingToken).ConfigureAwait(true);
-            // listParkedVehiclesMenu.Render();
-            // ConsoleUI.Loading();
-            // task.RunSynchronously();
+            // CancellationToken stoppingToken = new();
+            // _ = RequestVehiclesAsync(stoppingToken);
+            
+            bool result = request.TryPublish(new ListParkedVehiclesRequestEvent(
+               new ListParkedVehiclesDTO([])));
+
+            if (!result)
+                throw new Exception("Could not publish event");
+
+            listParkedVehiclesMenu.Render();
+        }
+
+        public Task RenderAsync()
+        {
+            throw new NotImplementedException();
         }
 
         private async Task RequestVehiclesAsync(CancellationToken stoppingToken)
@@ -27,6 +37,7 @@ namespace Garage
             
             await request.PublishAsync(new ListParkedVehiclesRequestEvent(
                new ListParkedVehiclesDTO([])), stoppingToken);
+            listParkedVehiclesMenu.Render();
         }
     }
 }

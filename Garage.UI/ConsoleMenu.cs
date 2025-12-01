@@ -17,17 +17,20 @@
             description, 
             selectionPrompt)
         {
-            SetMenuItems(menuItems);
-            _availableOptionsMessage = BuildAvailableOptionsMessage(MenuListItems);
+            List<MenuListItem> menuListItems = SetMenuItems(menuItems);
+            _availableOptionsMessage = BuildAvailableOptionsMessage(menuListItems);
         }
         public override void Render()
         {
+            ResetMenuSelection();
+            List<MenuListItem> menuListItems;
             do
             {
+                menuListItems = GetMenuItems();
                 ConsoleUI.Clear();
                 ConsoleUI.WriteLine($"{DisplayName}\n\n");
                 ConsoleUI.WriteLine($"{Description}\n");
-                foreach (var item in MenuListItems)
+                foreach (var item in menuListItems)
                 {
                     item.Render();
                 }
@@ -42,18 +45,19 @@
                     var selectionInput = ConsoleUI.GetSelectionFromReadKey(_selectionPrompt);
                     MenuException = null;
 
-                    if (MenuListItems.Count > 0)
-                    {
+                    // if (MenuListItems.Count > 0)
+                    // {
                         Selection = TryGetMenuSelectionFromConsoleKeyInfo(selectionInput);
                         if (Selection.Option > 0)
                         {
-                            var selectedItem = MenuListItems
+                            var selectedItem = menuListItems
                             .FirstOrDefault(item => item.Option.Equals(Selection.Option)) ??
                                 throw new Exception($"'{Selection.Option}' is not an available option. {_availableOptionsMessage}");
 
                             selectedItem?.Children?.Render();
+                            ResetMenuSelection();
                         }
-                    }
+                    // }
                 }
                 catch (Exception ex)
                 {
