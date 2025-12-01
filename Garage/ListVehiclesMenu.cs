@@ -12,7 +12,9 @@ internal class ListVehiclesMenu: ConsoleMenu
     displayName: "Parked Vehicles",
     description: "Showing all vehicles currently parked in the garage:",
     menuItems: [],
-    selectionPrompt: "Press 'Esc.' to go back"
-)
+    selectionPrompt: "Press 'Esc.' to go back")
     {}
+
+    public override MenuSelection? Selection { get; protected set; }
+    protected override Exception? MenuException { get; set; }
 }

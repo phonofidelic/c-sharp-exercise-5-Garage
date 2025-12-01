@@ -1,4 +1,5 @@
 ﻿using Garage.Library;
+using Garage.UI;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
@@ -34,6 +35,7 @@ namespace Garage
                 services.AddSingleton<ListVehiclesView>();
                 services.AddSingleton<ListVehiclesMenu>();
                 services.AddSingleton<ParkNewVehicleForm>();
+                services.AddSingleton<RemoveVehicleMenu>();
                 services.AddSingleton<CreateGarageResponseSuccessScreen>();
             })
             .UseConsoleLifetime();

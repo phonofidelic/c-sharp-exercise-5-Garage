@@ -15,8 +15,7 @@ namespace Garage
             displayName: "Create a new Garage",
             description: "Initialize a new Garage by giving it a name and indicating its capacity.",
             inputs: [],
-            inputPrompt: "Select a property from the menu to configure."
-        )
+            inputPrompt: "Select a property from the menu to configure.\nPress 'Esc.' to return to the main menu.")
         {
             _request = request;
 
@@ -37,6 +36,8 @@ namespace Garage
                 description: "Re-initialize the garage",
                 type: FormInputType.Submit));
         }
+
+        public override MenuSelection? Selection { get; protected set; }
 
         public override CreateGarageRequestDTO ParseFormData(Dictionary<string, string> rawFormData)
         {

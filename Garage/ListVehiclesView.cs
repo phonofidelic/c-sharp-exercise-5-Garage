@@ -1,5 +1,6 @@
 ﻿using Garage.Library;
 using Garage.UI;
+using Microsoft.VisualStudio.Threading;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,12 +15,16 @@ namespace Garage
     {
         public void Render()
         {
-            _ = RequestVehiclesAsync();
+            CancellationToken stoppingToken = new();
+            _ = RequestVehiclesAsync(stoppingToken).ConfigureAwait(true);
+            // listParkedVehiclesMenu.Render();
+            // ConsoleUI.Loading();
+            // task.RunSynchronously();
         }
 
-        private async Task RequestVehiclesAsync()
+        private async Task RequestVehiclesAsync(CancellationToken stoppingToken)
         {
-            CancellationToken stoppingToken = new();
+            
             await request.PublishAsync(new ListParkedVehiclesRequestEvent(
                new ListParkedVehiclesDTO([])), stoppingToken);
         }

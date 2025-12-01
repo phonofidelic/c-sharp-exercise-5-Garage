@@ -37,11 +37,12 @@ internal class ParkNewVehicleForm : ConsoleForm<ParkNewVehicleRequestDTO>, IRend
             description: "Park new vehicle",
             type: FormInputType.Submit),
     ],
-    inputPrompt: "Select an option from the menu.\nPress 'Esc.' to go back"
-)
+    inputPrompt: "Select an option from the menu.\nPress 'Esc.' to go back")
     {
         _request = request;
     }
+
+    public override MenuSelection? Selection { get; protected set; }
 
     public override ParkNewVehicleRequestDTO ParseFormData(Dictionary<string, string> rawFormData)
     {

@@ -1,4 +1,5 @@
-﻿using Garage.Library;
+﻿using System.Runtime.CompilerServices;
+using Garage.Library;
 using Garage.UI;
 
 namespace Garage
@@ -16,15 +17,18 @@ namespace Garage
             {
                 try
                 {
-                   
+                    mainMenu.ResetMenuSelection();
                     mainMenu.Render();
                 } catch (Exception ex)
                 {
                     return new ApplicationStatus(-1, ex);
                 }
-                ConsoleUI.WriteLineInfo("Press 'Esc.' to quit the application");
+                // ConsoleUI.WriteLineInfo("Press 'Esc.' to quit the application");
+
+                // ConsoleKeyInfo selection = ConsoleUI.GetSelectionFromReadKey("Press 'Esc.' to quit the application");
+                // if (selection.Key.Equals(ConsoleKey.Escape))
                 exitApplication = ConfirmExit(() => ConsoleUI.ReadKey(intercept: true), out _);
-            } while(!exitApplication);
+            } while((mainMenu.Selection?.Option != null) &&  !exitApplication);
 
             return new ApplicationStatus(0);
         }

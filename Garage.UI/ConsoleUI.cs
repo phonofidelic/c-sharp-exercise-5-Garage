@@ -64,5 +64,10 @@ namespace Garage.UI
             Console.WriteLine(message);
             return Console.ReadLine();
         }
+
+        public static void Loading()
+        {
+            Console.WriteLine("\n\tLoading...");
+        }
     }
 }

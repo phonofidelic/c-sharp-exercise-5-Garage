@@ -16,9 +16,7 @@ namespace Garage.UI
         public string Name { get; protected set; } = name;
         public string DisplayName { get; protected set; } = displayName;
         public string Description { get; protected set; } = description;
-
-        
-        public MenuSelection? Selection { get; protected set; } = null;
+        public abstract MenuSelection? Selection {  get; protected set; }
         protected string _availableOptionsMessage { get; set; } = "";
         private MenuList _menuListItems { get; set; } = [];
         protected List<MenuListItem> MenuListItems { 
@@ -35,6 +33,8 @@ namespace Garage.UI
         {
             DisplayName = new string(newName);
         }
+
+        public virtual void ResetMenuSelection() => Selection = null;
 
         public virtual void ResetMenuItems()
         {
