@@ -6,20 +6,39 @@ namespace Garage
     {
         private Guid _id;
 
+        private string _name;
+        public int Location { get; protected set; }
+        public string Name
+        {
+            get => new(_name);
+            private set => _name = value;
+        }
+
         public VehicleProperties Props { get; private set; }
 
-        public Vehicle(VehicleProperties props)
+        public Vehicle(string name, VehicleProperties props)
         {
             _id = Guid.NewGuid();
+            _name = name;
             Props = props;
         }
 
         // Return index position in Garage
-        public abstract int Park();
+        public virtual void Park(int space)
+        {
+            Location = space;
+        }
     }
     public abstract record VehicleProperties(
         string Make,
-        string VIN,
-        string Color);
+        string Color,
+        VehicleType Type);
+
+    public enum VehicleType
+    {
+        Car,
+        Bus,
+        Bicycle
+    }
 }
 

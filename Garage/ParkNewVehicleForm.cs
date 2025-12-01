@@ -5,7 +5,7 @@ using System.Security.Cryptography.X509Certificates;
 
 namespace Garage;
 
-internal class ParkNewVehicleForm : ConsoleForm<ParkNewVehicleDTO>, IRender
+internal class ParkNewVehicleForm : ConsoleForm<ParkNewVehicleRequestDTO>, IRender
 {
     public ParkNewVehicleForm()
         : base(
@@ -31,7 +31,7 @@ internal class ParkNewVehicleForm : ConsoleForm<ParkNewVehicleDTO>, IRender
 
     }
 
-    public override ParkNewVehicleDTO ParseFormData(Dictionary<string, string> rawFormData)
+    public override ParkNewVehicleRequestDTO ParseFormData(Dictionary<string, string> rawFormData)
     {
         throw new NotImplementedException();
     }

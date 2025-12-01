@@ -5,9 +5,10 @@ namespace Garage
 {
     internal class CreateGarageRequestEvent : ApplicationEvent
     {
-        public CreateGarageRequestEvent(CreateGarageRequestDTO garageCreate)
+        public CreateGarageRequestDTO Payload { get; private init; }
+        public CreateGarageRequestEvent(CreateGarageRequestDTO garageCreateRequestData)
         {
-            Payload = garageCreate;
+            Payload = garageCreateRequestData;
         }
     }
 }

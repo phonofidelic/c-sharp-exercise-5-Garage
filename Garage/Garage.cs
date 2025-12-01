@@ -1,9 +1,11 @@
 ﻿using Garage.Library;
+using Microsoft.Extensions.Logging;
 using System.Collections;
 
 namespace Garage
 {
-    public class Garage<T> : ApplicationStorage<T>, IEnumerable<T>, IStorage<T> where T : Vehicle
+    internal class Garage<TData> 
+        : IEnumerable<TData>, IStorage<TData> where TData : Vehicle
     {
         public Guid Id { get; init; }
         private string _name { get; set;}
@@ -16,7 +18,7 @@ namespace Garage
         public int Count { get; private set; }
         private Array _vehicles;
 
-        public Garage()
+        public Garage(IApplicationRequest request)
         {
             _name = "Default Garage";
             Capacity = 50;
@@ -30,30 +32,65 @@ namespace Garage
             _vehicles = new Vehicle[capacity];
         }
 
-        public override List<T> GetAll()
+        public List<TData> GetAll()
         {
-            List<T> tempList = [];
-            foreach (T vehicle in _vehicles)
+            List<TData> tempList = [];
+            foreach (TData vehicle in _vehicles)
             {
                 tempList.Add(vehicle);
             }
             return tempList;
         }
 
-        public override void Add(T vehicle)
+        internal int Park(ParkNewVehicleRequestDTO vehicleDTO)
         {
-            if (Count < Capacity)
-            {
-                if (_vehicles.GetValue(Count) != null)
-                    throw new Exception($"Index {Count} is not empty");
+            Vehicle newVehicle;
 
-                _vehicles.SetValue(vehicle, Count);
-                Count++;
-                Capacity--;
+            switch (vehicleDTO.Type)
+            {
+                case VehicleType.Car:
+                    newVehicle = new VehicleCar(new(
+                        vehicleDTO.Make,
+                        vehicleDTO.VIN,
+                        vehicleDTO.Color));
+                    break;
+
+                case VehicleType.Bicycle:
+                    newVehicle = new VehicleBicycle(vehicleDTO);
+                    break;
+
+                case VehicleType.Bus:
+                    newVehicle = new VehicleBus(vehicleDTO);
+                    break;
+
+                default:
+                    throw new Exception($"Unsupported vehicle type: {vehicleDTO.Type}");
+
             }
+
+            
+            return Add((TData)newVehicle);
         }
 
-        public void Remove(T vehicle)
+        public int Add(TData newVehicle) 
+        {
+            if (Count >= Capacity)
+            {
+                throw new Exception("The garage is full");
+            }
+
+            if (_vehicles.GetValue(Count) != null)
+                throw new Exception($"Index {Count} is not empty");
+
+            newVehicle.Park(Count);
+            _vehicles.SetValue(newVehicle, Count);
+            Count++;
+            Capacity--;
+
+            return Count;
+        }
+
+        public void Remove(TData vehicle)
         {
             int vehicleIndex = FindVehicleIndex(vehicle);
             if (vehicleIndex < 0)
@@ -82,9 +119,9 @@ namespace Garage
             }
             return index;
         }
-        public IEnumerator<T> GetEnumerator()
+        public IEnumerator<TData> GetEnumerator()
         {
-            foreach (T item in _vehicles)
+            foreach (TData item in _vehicles)
             {
                 yield return item;
             }

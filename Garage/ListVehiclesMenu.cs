@@ -23,9 +23,10 @@ internal class ListVehiclesMenu: ConsoleMenu
             if (vehicle != null) {
                 ListParkedVehiclesDTO props = (ListParkedVehiclesDTO)vehicle.Props;
             
-                var (Make, VIN, Color) = props;
+                var (Make, Color, Type) = props;
 
-                string menuItemName = $"VIN: {VIN}\tModel: {Make}\tColor: {Color}";
+                // ToDo: Handle VIN display
+                string menuItemName = $"\tModel: {Make}\tColor: {Color}\t Type {Type}";
                 AddMenuItem(new MenuItemDTO(
                     name: menuItemName));
             }

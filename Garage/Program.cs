@@ -23,6 +23,7 @@ namespace Garage
                 services.AddSingleton<CreateGarageResponseEventHandler>();
                 // Register data entities
                 services.AddSingleton<CreateGarageRequestDTO>();
+                services.AddSingleton<ParkNewVehicleRequestDTO>();
                 services.AddSingleton<ListParkedVehiclesDTO>();
                 services.AddSingleton<Garage.Garage<Vehicle>, Garage<Vehicle>>();
                 // Register UI components

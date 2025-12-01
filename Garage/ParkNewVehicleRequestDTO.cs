@@ -1,22 +1,17 @@
-﻿using Garage;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Drawing;
 
 namespace Garage
 {
-    internal record ListParkedVehiclesDTO : VehicleProperties
+    internal record ParkNewVehicleRequestDTO : VehicleProperties 
     {
         internal string? VIN = null;
 
         // Car and Bus DTO
-        public ListParkedVehiclesDTO(
+        public ParkNewVehicleRequestDTO(
             string make,
             string vin,
             string color,
-            VehicleType type)
+            VehicleType type)   
             : base(
             make,
             color,
@@ -29,7 +24,7 @@ namespace Garage
         }
 
         // Bicycle DTO
-        public ListParkedVehiclesDTO(
+        public ParkNewVehicleRequestDTO(
             string make,
             string color,
             VehicleType type)
@@ -43,6 +38,5 @@ namespace Garage
             Color = color;
             Type = VehicleType.Bicycle;
         }
-    }
+    } 
 }
-

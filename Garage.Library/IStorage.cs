@@ -10,6 +10,6 @@ namespace Garage.Library
     {
         List<TData> GetAll();
 
-        void Add(TData data);
+        int Add(TData data);
     }
 }
