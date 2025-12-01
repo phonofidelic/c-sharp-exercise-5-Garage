@@ -77,7 +77,7 @@ namespace Garage.UI
                             // ToDo: Don't use magic strings
                             if (selectedItem.Name == "Submit")
                             {
-                                await Submit().ConfigureAwait(true);
+                                await Submit();
                        
                                 Selection = new(0);
                                 IsSubmitted = true;
@@ -109,7 +109,7 @@ namespace Garage.UI
         }
 
         public abstract TFormData ParseFormData(Dictionary<string, string> rawFormData);
-        
+
         public abstract Task Submit();
 
         public override void Render()

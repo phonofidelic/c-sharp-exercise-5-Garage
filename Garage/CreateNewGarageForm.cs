@@ -54,7 +54,9 @@ namespace Garage
         {
             var parsedFormData = ParseFormData(FormData) ?? throw new Exception($"Form data is incomplete: {FormData}");
             CancellationToken stoppingToken = new();
-            await _request.Publish(new CreateGarageRequestEvent(parsedFormData), stoppingToken);
+            await _request.PublishAsync(
+                new CreateGarageRequestEvent(
+                    parsedFormData), stoppingToken);
         }
     }
 }

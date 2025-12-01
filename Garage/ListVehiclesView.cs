@@ -8,7 +8,9 @@ using System.Threading.Tasks;
 
 namespace Garage
 {
-    internal class ListVehiclesView(IApplicationRequest request) : IRender
+    internal class ListVehiclesView(
+        IApplicationRequest request,
+         ListVehiclesMenu listParkedVehiclesMenu) : IRender
     {
         public void Render()
         {
@@ -18,7 +20,7 @@ namespace Garage
         private async Task RequestVehiclesAsync()
         {
             CancellationToken stoppingToken = new();
-            await request.Publish(new ListParkedVehiclesRequestEvent(
+            await request.PublishAsync(new ListParkedVehiclesRequestEvent(
                new ListParkedVehiclesDTO([])), stoppingToken);
         }
     }

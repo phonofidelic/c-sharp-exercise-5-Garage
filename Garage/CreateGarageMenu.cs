@@ -28,7 +28,7 @@ namespace Garage
         {
             CancellationToken stoppingToken = new();
             CreateGarageRequestEvent garageCreatedEvent = new(new CreateGarageRequestDTO("My new garage", 50));
-            await _request.Publish(garageCreatedEvent, stoppingToken);
+            await _request.PublishAsync(garageCreatedEvent, stoppingToken);
         }
     }
 }

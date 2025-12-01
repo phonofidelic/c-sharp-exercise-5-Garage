@@ -2,6 +2,6 @@
 {
     public interface IApplicationRequest
     {
-        public Task Publish(ApplicationEvent appEvent, CancellationToken stoppingToken);
+        public Task PublishAsync(ApplicationEvent appEvent, CancellationToken stoppingToken);
     }
 }

@@ -75,7 +75,7 @@ internal class ParkNewVehicleForm : ConsoleForm<ParkNewVehicleRequestDTO>, IRend
     {
         var parsedFormData = ParseFormData(FormData) ?? throw new Exception($"Form data is incomplete: {FormData}");
         CancellationToken stoppingToken = new();
-        await _request.Publish(new ParkNewVehicleRequestEvent(parsedFormData), stoppingToken);
+        await _request.PublishAsync(new ParkNewVehicleRequestEvent(parsedFormData), stoppingToken);
     }
 }
  

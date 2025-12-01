@@ -2,7 +2,7 @@ using System;
 
 namespace Garage.UI;
 
-public class MenuSelection
+public record MenuSelection
 {
     public int Option { get; private init; }
     public MenuListItem? Item { get; private init; }

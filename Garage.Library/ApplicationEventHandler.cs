@@ -14,9 +14,9 @@ namespace Garage.Library
         public virtual void Handle<T>(T @event) where T : ApplicationEvent
         {
             // Check if the concrete handler can handle the event
-            logger.LogInformation("Checking if handler can handle event: {Event}, {CanHandle}", @event, @event.GetType() == typeof(TEvent));
-            logger.LogInformation("Handler event type: {EventType}", typeof(TEvent));
-            logger.LogInformation("Target event type: {EventType}", @event);
+            logger.LogDebug("Checking if handler can handle event: {Event}, {CanHandle}", @event, @event.GetType() == typeof(TEvent));
+            logger.LogDebug("Handler event type: {EventType}", typeof(TEvent));
+            logger.LogDebug("Target event type: {EventType}", @event);
             if (@event.GetType() == typeof(TEvent))
             {
                 _handle(@event);

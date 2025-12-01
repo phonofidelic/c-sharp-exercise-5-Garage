@@ -13,17 +13,16 @@ namespace Garage
         public ListParkedVehiclesDTO? Props { get; private set; } = null;
         protected override void _handle<TEvent>(TEvent @event)
         {
-            logger.LogInformation("Processing data for event: {Event}", @event);
+            logger.LogDebug("Processing data for event: {Event}", @event);
             ListParkedVehiclesDTO parsedPayload = (ListParkedVehiclesDTO)@event.Payload;
             Props = parsedPayload;
-            logger.LogInformation("Props set: {}", Props);
+            logger.LogDebug("Props set: {}", Props);
 
             Queue<Vehicle>? vehicles = garage.GetAll();
 
             // Reset the menu items list
             listParkedVehiclesMenu.ResetMenuItems();
-
-            ConsoleUI.WriteLine("Showing all parked vehicles:");
+            
             // Add menu items to the list
             for (int i = 0; i < garage.Count; i++)
             {
