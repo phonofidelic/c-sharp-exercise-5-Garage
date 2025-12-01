@@ -2,7 +2,7 @@
 
 namespace Garage
 {
-    public abstract class Vehicle
+    public abstract class Vehicle : IParkable
     {
         private Guid _id;
 

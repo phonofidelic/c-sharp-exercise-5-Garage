@@ -7,7 +7,8 @@ namespace Garage
     internal class Garage<TData> 
         : IEnumerable<TData>, IStorage<TData> where TData : Vehicle
     {
-        public Guid Id { get; init; }
+        private ILogger<Garage<TData>> _logger;
+        private Guid Id { get; init; }
         private string _name { get; set;}
         public string Name
         {
@@ -18,11 +19,21 @@ namespace Garage
         public int Count { get; private set; }
         private Array _vehicles;
 
-        public Garage(IApplicationRequest request)
+        public Garage(
+            //IApplicationRequest request,
+            ILogger<Garage<TData>> logger)
         {
+            _logger = logger;
             _name = "Default Garage";
             Capacity = 50;
             _vehicles = new Vehicle[50];
+
+            // Populate the garage
+            Park(new(
+                make: "Toyota",
+                color: "Black",
+                type: VehicleType.Car,
+                vin: "ABC-123"));
         }
 
         public void Init(string name, int capacity)
@@ -32,12 +43,13 @@ namespace Garage
             _vehicles = new Vehicle[capacity];
         }
 
-        public List<TData> GetAll()
+        public Queue<TData> GetAll()
         {
-            List<TData> tempList = [];
+            _logger.LogInformation("GetAll: {list}", _vehicles);
+            Queue<TData> tempList = [];
             foreach (TData vehicle in _vehicles)
             {
-                tempList.Add(vehicle);
+                tempList.Enqueue(vehicle);
             }
             return tempList;
         }

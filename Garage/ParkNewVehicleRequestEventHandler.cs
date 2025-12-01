@@ -11,7 +11,7 @@ namespace Garage
     internal class ParkNewVehicleRequestEventHandler(
         Garage<Vehicle> garage,
         //IParkable vehicle,
-        IApplicationRequest request,
+        //IApplicationRequest request,
         ILogger<ParkNewVehicleRequestEventHandler> logger) 
         : ApplicationEventHandler<ParkNewVehicleRequestEvent>(logger)
     {

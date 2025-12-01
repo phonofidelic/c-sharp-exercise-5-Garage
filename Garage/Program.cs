@@ -21,6 +21,8 @@ namespace Garage
                 // Register event handlers
                 services.AddSingleton<CreateGarageRequestEventHandler>();
                 services.AddSingleton<CreateGarageResponseEventHandler>();
+                services.AddSingleton<ParkNewVehicleRequestEventHandler>();
+                services.AddSingleton<ListParkedVehiclesRequestEventHandler>();
                 // Register data entities
                 services.AddSingleton<CreateGarageRequestDTO>();
                 services.AddSingleton<ParkNewVehicleRequestDTO>();
@@ -29,6 +31,7 @@ namespace Garage
                 // Register UI components
                 services.AddSingleton<MainMenu>();
                 services.AddSingleton<CreateNewGarageForm>();
+                services.AddSingleton<ListVehiclesView>();
                 services.AddSingleton<ListVehiclesMenu>();
                 services.AddSingleton<ParkNewVehicleForm>();
                 services.AddSingleton<CreateGarageResponseSuccessScreen>();
@@ -42,6 +45,8 @@ namespace Garage
             manager.Add(host.Services.GetRequiredService<IUI>());
             manager.Add(host.Services.GetRequiredService<CreateGarageRequestEventHandler>());
             manager.Add(host.Services.GetRequiredService<CreateGarageResponseEventHandler>());
+            manager.Add(host.Services.GetRequiredService<ParkNewVehicleRequestEventHandler>());
+            manager.Add(host.Services.GetRequiredService<ListParkedVehiclesRequestEventHandler>());
             manager.Start();
 
         }

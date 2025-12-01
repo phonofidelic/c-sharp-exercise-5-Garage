@@ -8,7 +8,7 @@ namespace Garage.Library
 {
     public interface IStorage<TData>
     {
-        List<TData> GetAll();
+        Queue<TData> GetAll();
 
         int Add(TData data);
     }

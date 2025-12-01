@@ -2,6 +2,6 @@
 {
     internal interface IParkable
     {
-        Vehicle Park<T>(T vehicleDTO);
+        void Park(int space);
     }
 }

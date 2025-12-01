@@ -36,6 +36,11 @@ namespace Garage.UI
             DisplayName = new string(newName);
         }
 
+        public virtual void ResetMenuItems()
+        {
+            _menuListItems = [];
+        }
+
         public virtual void SetMenuItems(IEnumerable<MenuItemDTO> items)
         {
             foreach (MenuItemDTO item in items) {
