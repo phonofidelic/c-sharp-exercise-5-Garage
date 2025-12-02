@@ -34,7 +34,6 @@ namespace Garage.UI
         public static ConsoleKeyInfo ReadKey() => Console.ReadKey();
         public static ConsoleKeyInfo ReadKey(bool intercept) => Console.ReadKey(intercept);
         public static void Clear() => Console.Clear();
-        //public static void Clear() => Console.WriteLine("# CLEAR #");
         public static void Write(string message) => Console.Write(message);
         public static void WriteColor(string message, ConsoleColor color)
         {

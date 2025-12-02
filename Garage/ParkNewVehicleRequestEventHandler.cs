@@ -10,8 +10,6 @@ namespace Garage
 {
     internal class ParkNewVehicleRequestEventHandler(
         Garage<Vehicle> garage,
-        //IParkable vehicle,
-        //IApplicationRequest request,
         ILogger<ParkNewVehicleRequestEventHandler> logger) 
         : ApplicationEventHandler<ParkNewVehicleRequestEvent>(logger)
     {
@@ -20,9 +18,7 @@ namespace Garage
             logger.LogDebug("Handling event: {Event}", @event);
             logger.LogDebug("Payload: {Payload}", @event.Payload);
             ParkNewVehicleRequestDTO parsedPayload = (ParkNewVehicleRequestDTO)@event.Payload;
-            //var (Make, VIN, Color, Type) = parsedPayload;
 
-            //vehicle.Park<ParkNewVehicleRequestDTO>(parsedPayload);
             garage.Park(parsedPayload);
         }
 

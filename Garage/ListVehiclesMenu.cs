@@ -14,7 +14,4 @@ internal class ListVehiclesMenu: ConsoleMenu
     menuItems: [],
     selectionPrompt: "Press 'Esc.' to go back")
     {}
-
-    // public override MenuSelection? Selection { get; protected set; }
-    // protected override Exception? MenuException { get; set; }
 }

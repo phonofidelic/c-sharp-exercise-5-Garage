@@ -14,7 +14,4 @@ internal class RemoveVehicleMenu() : ConsoleMenu
         new("Vehicle GHI-789 (bike)")
     ],
     selectionPrompt: "Select an option from the menu.\nPress 'Esc.' to go back")
-{
-    // public override MenuSelection? Selection { get; protected set; }
-    // protected override Exception? MenuException { get; set; }
-}
+{}
