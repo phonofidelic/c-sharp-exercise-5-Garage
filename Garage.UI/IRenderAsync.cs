@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Garage.UI
 {
-    internal interface IRenderAsync
+    public interface IRenderAsync
     {
         public Task RenderAsync();
     }

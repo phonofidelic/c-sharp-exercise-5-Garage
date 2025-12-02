@@ -1,4 +1,5 @@
 ﻿using Garage.Library;
+using Garage.UI;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
@@ -23,6 +24,7 @@ namespace Garage
                 services.AddSingleton<CreateGarageResponseEventHandler>();
                 services.AddSingleton<ParkNewVehicleRequestEventHandler>();
                 services.AddSingleton<ListParkedVehiclesRequestEventHandler>();
+                services.AddSingleton<ListParkedVehicleResponseEventHandler>();
                 // Register data entities
                 services.AddSingleton<CreateGarageRequestDTO>();
                 services.AddSingleton<ParkNewVehicleRequestDTO>();
@@ -34,6 +36,7 @@ namespace Garage
                 services.AddSingleton<ListVehiclesView>();
                 services.AddSingleton<ListVehiclesMenu>();
                 services.AddSingleton<ParkNewVehicleForm>();
+                services.AddSingleton<RemoveVehicleMenu>();
                 services.AddSingleton<CreateGarageResponseSuccessScreen>();
             })
             .UseConsoleLifetime();
@@ -47,6 +50,7 @@ namespace Garage
             manager.Add(host.Services.GetRequiredService<CreateGarageResponseEventHandler>());
             manager.Add(host.Services.GetRequiredService<ParkNewVehicleRequestEventHandler>());
             manager.Add(host.Services.GetRequiredService<ListParkedVehiclesRequestEventHandler>());
+            manager.Add(host.Services.GetRequiredService<ListParkedVehicleResponseEventHandler>());
             manager.Start();
 
         }

@@ -2,7 +2,9 @@
 
 namespace Garage
 {
-    internal class CreateGarageResponseSuccessScreen()
+    internal class CreateGarageResponseSuccessScreen(
+        MainMenu mainMenu
+    )
     {
         public void RenderWithProps(CreateGarageResponseDTO props)
         {
@@ -16,6 +18,8 @@ namespace Garage
                 ConsoleUI.WriteLine($"Capacity: {capacity}");
             }
             ConsoleUI.Continue();
+            mainMenu.ResetMenuSelection();
+            mainMenu.Render();
         }
     }
 }

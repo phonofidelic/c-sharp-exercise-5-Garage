@@ -34,6 +34,11 @@ namespace Garage
                 color: "Black",
                 type: VehicleType.Car,
                 vin: "ABC-123"));
+            Park(new(
+                make: "Volkswagen",
+                color: "Yellow",
+                type: VehicleType.Bus,
+                vin: "XYZ-321"));
         }
 
         public void Init(string name, int capacity)
@@ -45,7 +50,7 @@ namespace Garage
 
         public Queue<TData> GetAll()
         {
-            _logger.LogInformation("GetAll: {list}", _vehicles);
+            _logger.LogDebug("GetAll: {list}", _vehicles);
             Queue<TData> tempList = [];
             foreach (TData vehicle in _vehicles)
             {

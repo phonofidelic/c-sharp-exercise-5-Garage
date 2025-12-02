@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Garage
+﻿namespace Garage
 {
     public abstract class Vehicle : IParkable
     {

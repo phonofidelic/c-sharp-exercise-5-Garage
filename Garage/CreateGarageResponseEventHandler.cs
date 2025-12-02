@@ -12,10 +12,10 @@ namespace Garage
         public CreateGarageResponseDTO? Props { get; private set; } = null;
         protected override void _handle<TEvent>(TEvent @event)
         {
-            logger.LogInformation("Processing data for event: {Event}", @event);
+            logger.LogDebug("Processing data for event: {Event}", @event);
             CreateGarageResponseDTO parsedPayload = (CreateGarageResponseDTO)@event.Payload;
             Props = parsedPayload;
-            logger.LogInformation("Props set: {}", Props);
+            logger.LogDebug("Props set: {}", Props);
 
             // Get UI components to render
             using IServiceScope scope = serviceScopeFactory.CreateScope();

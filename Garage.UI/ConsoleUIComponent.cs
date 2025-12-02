@@ -16,9 +16,7 @@ namespace Garage.UI
         public string Name { get; protected set; } = name;
         public string DisplayName { get; protected set; } = displayName;
         public string Description { get; protected set; } = description;
-
-        
-        public MenuSelection? Selection { get; protected set; } = null;
+        public abstract MenuSelection? Selection {  get; protected set; }
         protected string _availableOptionsMessage { get; set; } = "";
         private MenuList _menuListItems { get; set; } = [];
         protected List<MenuListItem> MenuListItems { 
@@ -36,16 +34,24 @@ namespace Garage.UI
             DisplayName = new string(newName);
         }
 
+        public void SetDescription(string description)
+        {
+            Description = description;
+        }
+
+        public virtual void ResetMenuSelection() => Selection = null;
+
         public virtual void ResetMenuItems()
         {
             _menuListItems = [];
         }
 
-        public virtual void SetMenuItems(IEnumerable<MenuItemDTO> items)
+        public virtual List<MenuListItem> SetMenuItems(IEnumerable<MenuItemDTO> items)
         {
             foreach (MenuItemDTO item in items) {
                 _menuListItems.Add(item);
             }
+            return _menuListItems.ToList();
         }
 
         public void SetFormInputs(IEnumerable<FormInputDTO> items)

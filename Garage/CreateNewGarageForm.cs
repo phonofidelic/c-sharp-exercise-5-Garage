@@ -15,8 +15,7 @@ namespace Garage
             displayName: "Create a new Garage",
             description: "Initialize a new Garage by giving it a name and indicating its capacity.",
             inputs: [],
-            inputPrompt: "Select a property from the menu to configure."
-        )
+            inputPrompt: "Select a property from the menu to configure.\nPress 'Esc.' to return to the main menu.")
         {
             _request = request;
 
@@ -38,6 +37,8 @@ namespace Garage
                 type: FormInputType.Submit));
         }
 
+        public override MenuSelection? Selection { get; protected set; }
+
         public override CreateGarageRequestDTO ParseFormData(Dictionary<string, string> rawFormData)
         {
             var name = rawFormData["Name"] ?? throw new Exception("'Name' is a required field");
@@ -54,7 +55,9 @@ namespace Garage
         {
             var parsedFormData = ParseFormData(FormData) ?? throw new Exception($"Form data is incomplete: {FormData}");
             CancellationToken stoppingToken = new();
-            await _request.Publish(new CreateGarageRequestEvent(parsedFormData), stoppingToken);
+            await _request.PublishAsync(
+                new CreateGarageRequestEvent(
+                    parsedFormData), stoppingToken);
         }
     }
 }

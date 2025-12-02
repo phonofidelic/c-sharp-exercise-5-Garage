@@ -16,16 +16,16 @@ namespace Garage
     {
         protected override void _handle<TEvent>(TEvent @event)
         {
-            logger.LogInformation("Handling event: {Event}", @event);
-            logger.LogInformation("Payload: {Payload}", @event.Payload);
+            logger.LogDebug("Handling event: {Event}", @event);
+            logger.LogDebug("Payload: {Payload}", @event.Payload);
             CreateGarageRequestDTO parsedPayload = (CreateGarageRequestDTO)@event.Payload;
-            var (name, capacity) = parsedPayload;
-       
+            var ( name,  capacity) = parsedPayload;
+
             // Re-initialize the Garage
             garage.Init(name, capacity);
 
             CancellationToken stoppingToken = new();
-            _ = request.Publish(
+            _ = request.PublishAsync(
                 new CreateGarageResponseEvent(new CreateGarageResponseDTO(name, capacity)),
                 stoppingToken);
         }

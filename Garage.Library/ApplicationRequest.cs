@@ -10,10 +10,14 @@ namespace Garage.Library
     {
         private IEventBus _eventBus = eventBus;
 
-        public Task Publish(ApplicationEvent appEvent, CancellationToken stoppingToken)
+        public Task PublishAsync(ApplicationEvent appEvent, CancellationToken stoppingToken)
         {
-            //CancellationToken stoppingToken = new();
             return _eventBus.PublishAsync(appEvent, stoppingToken);
+        }
+
+        public bool TryPublish(ApplicationEvent appEvent)
+        {
+            return _eventBus.TryPublish(appEvent);
         }
     }
 }

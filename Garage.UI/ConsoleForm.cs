@@ -7,22 +7,25 @@ using System.Threading.Tasks;
 
 namespace Garage.UI
 {
-    public abstract class ConsoleForm<TFormData> : ConsoleUIComponent, IRender, IRenderAsync where TFormData : class
+    public abstract class ConsoleForm<TFormData> : ConsoleUIComponent, IRenderAsync where TFormData : class
     {
         public Dictionary<string, string> FormData { get; protected set; } = [];
         private string _formPrompt { get; set; }
         public Exception? FormException { get; protected set; } = null;
         protected bool IsSubmitted { get; set; } = false;
-
         protected List<FormInputDTO> FormInputs { get; set; } = [];
 
         public ConsoleForm(
         string name,
         string displayName,
         string description,
-        string inputPrompt,
-        IEnumerable<FormInputDTO> inputs
-        ) : base(name, displayName, description, inputPrompt)
+        IEnumerable<FormInputDTO> inputs,
+        string inputPrompt
+        ) : base(
+            name, 
+            displayName, 
+            description, 
+            inputPrompt)
         {
             _formPrompt = inputPrompt;
             SetFormInputs(inputs);
@@ -63,40 +66,37 @@ namespace Garage.UI
                     if (MenuListItems.Count > 0)
                     {
                         Selection = TryGetMenuSelectionFromConsoleKeyInfo(selectionInput);
-                        if (Selection.Option.Equals(0))
+                        if (Selection.Option > 0)
                         {
-                            break;
-                        }
+                            var selectedItem = MenuListItems
+                            .FirstOrDefault(item => item.Option.Equals(Selection.Option)) ??
+                                throw new Exception($"'{Selection.Option}' is not an available option. {_availableOptionsMessage}");
 
-                        var selectedItem = MenuListItems
-                        .FirstOrDefault(item => item.Option.Equals(Selection.Option)) ??
-                            throw new Exception($"'{Selection.Option}' is not an available option. {_availableOptionsMessage}");
-
-                        if (selectedItem != null)
-                        {
-                            // ToDo: Don't use magic strings
-                            if (selectedItem.Name == "Submit")
+                            if (selectedItem != null)
                             {
-                                await Submit().ConfigureAwait(true);
-                       
-                                Selection = new(0);
-                                IsSubmitted = true;
-                                break;
-                            } else
-                            {
-                                var newData = selectedItem.Input?.Render();
-                                FormData[selectedItem.Name] = newData ?? "";
+                                // ToDo: Don't use magic strings
+                                if (selectedItem.Name == "Submit")
+                                {
+                                    await Submit();
+                                    Selection = new(0);
+                                    IsSubmitted = true;
+                                    return;
+                                } else
+                                {
+                                    var newData = selectedItem.Input?.Render();
+                                    FormData[selectedItem.Name] = newData ?? "";
+                                }
                             }
                         }
                     }
                 } catch (Exception ex)
                 {
                     FormException = ex;
-                    Selection = null;
+                    ResetMenuSelection();
                 }
                 if (Selection?.Option > 0)
-                    Selection = null;
-            } while (Selection == null || !IsSubmitted);
+                    ResetMenuSelection();
+            } while (Selection?.Option != 0);
         }
 
         protected void ResetFormData()
@@ -109,7 +109,7 @@ namespace Garage.UI
         }
 
         public abstract TFormData ParseFormData(Dictionary<string, string> rawFormData);
-        
+
         public abstract Task Submit();
 
         public override void Render()

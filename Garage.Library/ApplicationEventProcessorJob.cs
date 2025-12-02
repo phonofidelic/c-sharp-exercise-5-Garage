@@ -16,7 +16,7 @@ namespace Garage.Library
             {
                 try
                 {
-                    logger.LogInformation("Processing message\n\tEvent: {Event}\tId: {Id}\tRecord: {Record}", applicationEvent, applicationEvent.Id, applicationEvent.Payload);
+                    logger.LogDebug("Processing message\n\tEvent: {Event}\tId: {Id}\tRecord: {Record}", applicationEvent, applicationEvent.Id, applicationEvent.Payload);
                     // Send the event to registered handlers
                     _manager.Handle(applicationEvent);
                     

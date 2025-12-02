@@ -10,7 +10,8 @@ internal class MainMenu : ConsoleMenu
         Garage<Vehicle> garage,
     CreateNewGarageForm createNewGarageMenu,
     ListVehiclesView listVehiclesView,
-    ParkNewVehicleForm parkNewVehicleForm
+    ParkNewVehicleForm parkNewVehicleForm,
+    RemoveVehicleMenu removeVehicleMenu
     )
         : base(
     name: "Main Menu",
@@ -31,12 +32,13 @@ internal class MainMenu : ConsoleMenu
                     ),
                     new(
                         name: "Remove a parked vehicle",
-                        children: new RemoveVehicleMenu()
+                        children: removeVehicleMenu
                     )
                 ],
-    selectionPrompt: "Select an option from the menu. \nPress 'Esc.' to quit the application"
-    )
+    selectionPrompt: "Select an option from the menu. \nPress 'Esc.' to quit the application")
     { }
+    public override MenuSelection? Selection { get; protected set; }
+    protected override Exception? MenuException { get; set; }
 }
 
 public record MainMenuDTO();

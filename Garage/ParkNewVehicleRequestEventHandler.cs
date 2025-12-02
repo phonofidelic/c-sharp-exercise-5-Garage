@@ -17,8 +17,8 @@ namespace Garage
     {
         protected override void _handle<TEvent>(TEvent @event)
         {
-            logger.LogInformation("Handling event: {Event}", @event);
-            logger.LogInformation("Payload: {Payload}", @event.Payload);
+            logger.LogDebug("Handling event: {Event}", @event);
+            logger.LogDebug("Payload: {Payload}", @event.Payload);
             ParkNewVehicleRequestDTO parsedPayload = (ParkNewVehicleRequestDTO)@event.Payload;
             //var (Make, VIN, Color, Type) = parsedPayload;
 
