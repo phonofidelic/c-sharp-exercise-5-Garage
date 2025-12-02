@@ -7,6 +7,7 @@ namespace Garage
     internal class ListParkedVehiclesRequestEventHandler(
         Garage<Vehicle> garage,
         ListVehiclesMenu listParkedVehiclesMenu,
+        IApplicationRequest request,
         ILogger<ListParkedVehiclesRequestEventHandler> logger)
         : ApplicationEventHandler<ListParkedVehiclesRequestEvent>(logger)
     {
@@ -33,13 +34,20 @@ namespace Garage
                     listParkedVehiclesMenu.AddMenuItem(new MenuItemDTO(
                         name: FormatRow(vehicle.Props.Make, vehicle.Props.Color, vehicle.Props.Type.ToString())));
             }
+
+            // Update the menu
             listParkedVehiclesMenu.SetDescription(
                 "Showing all vehicles currently parked in the garage:" + 
                 "\n\n\t" +
                 FormatRow("Make:", "Color:", "Type:") +
                 "\n____________________________________________________");
-            // Render the list
-            // listParkedVehiclesMenu.Render();
+
+            // Trigger the response event for the response handler to render the updated menu
+            CancellationToken stoppingToken = new();
+            _ = request.PublishAsync(
+                new ListParkedVehiclesResponseEvent(new ListParkedVehiclesResponseDTO(vehicles)),
+                stoppingToken
+            );
         }
 
         public override void SetNext(IHandler handler)
