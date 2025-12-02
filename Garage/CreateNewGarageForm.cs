@@ -37,8 +37,6 @@ namespace Garage
                 type: FormInputType.Submit));
         }
 
-        public override MenuSelection? Selection { get; protected set; }
-
         public override CreateGarageRequestDTO ParseFormData(Dictionary<string, string> rawFormData)
         {
             var name = rawFormData["Name"] ?? throw new Exception("'Name' is a required field");

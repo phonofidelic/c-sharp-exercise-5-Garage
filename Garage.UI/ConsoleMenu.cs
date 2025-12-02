@@ -3,8 +3,8 @@
     public abstract class ConsoleMenu : ConsoleUIComponent
 
     {
-        protected abstract Exception? MenuException { get; set; }
-
+        private Exception? MenuException { get; set; }
+        private MenuSelection? Selection {  get; set; }
         public ConsoleMenu(
         string name,
         string displayName,
@@ -58,14 +58,17 @@
                 }
                 catch (Exception ex)
                 {
-                    MenuException = new Exception($"Error in '{Name}':\n{ex.Message}");
+                    // MenuException = new Exception($"Error in '{Name}':\n{ex.Message}");
+                    MenuException = ex;
                     ResetMenuSelection();
                 }
 
                 if (Selection?.Option > 0)
                     ResetMenuSelection();
-            } while (Selection?.Option != 0);
+            } while (Selection == null || Selection.Option != 0);
         }
+
+        private void ResetMenuSelection() => Selection = null;
     }
 }
 

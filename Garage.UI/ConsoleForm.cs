@@ -11,7 +11,8 @@ namespace Garage.UI
     {
         public Dictionary<string, string> FormData { get; protected set; } = [];
         private string _formPrompt { get; set; }
-        public Exception? FormException { get; protected set; } = null;
+        private Exception? FormException { get; set; } = null;
+        private MenuSelection? Selection {  get; set; }
         protected bool IsSubmitted { get; set; } = false;
         protected List<FormInputDTO> FormInputs { get; set; } = [];
 
@@ -116,5 +117,7 @@ namespace Garage.UI
         {
             _ = RenderAsync();
         }
+
+        private void ResetMenuSelection() => Selection = null;
     }
 }

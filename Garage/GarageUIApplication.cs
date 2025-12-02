@@ -17,14 +17,14 @@ namespace Garage
             {
                 try
                 {
-                    mainMenu.ResetMenuSelection();
+                    // mainMenu.ResetMenuSelection();
                     mainMenu.Render();
                 } catch (Exception ex)
                 {
                     return new ApplicationStatus(-1, ex);
                 }
                 exitApplication = ConfirmExit(() => ConsoleUI.ReadKey(intercept: true), out _);
-            } while((mainMenu.Selection?.Option != null) &&  !exitApplication);
+            } while(!exitApplication);
 
             return new ApplicationStatus(0);
         }

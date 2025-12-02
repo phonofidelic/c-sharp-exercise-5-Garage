@@ -18,7 +18,6 @@ namespace Garage
                 ConsoleUI.WriteLine($"Capacity: {capacity}");
             }
             ConsoleUI.Continue();
-            mainMenu.ResetMenuSelection();
             mainMenu.Render();
         }
     }

@@ -41,9 +41,6 @@ internal class ParkNewVehicleForm : ConsoleForm<ParkNewVehicleRequestDTO>, IRend
     {
         _request = request;
     }
-
-    public override MenuSelection? Selection { get; protected set; }
-
     public override ParkNewVehicleRequestDTO ParseFormData(Dictionary<string, string> rawFormData)
     {
         if (!FormData.TryGetValue("Type", out string? vehicleType))

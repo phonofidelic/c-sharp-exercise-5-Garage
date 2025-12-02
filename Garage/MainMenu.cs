@@ -37,8 +37,6 @@ internal class MainMenu : ConsoleMenu
                 ],
     selectionPrompt: "Select an option from the menu. \nPress 'Esc.' to quit the application")
     { }
-    public override MenuSelection? Selection { get; protected set; }
-    protected override Exception? MenuException { get; set; }
 }
 
 public record MainMenuDTO();

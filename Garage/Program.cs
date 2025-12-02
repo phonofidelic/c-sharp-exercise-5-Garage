@@ -18,7 +18,6 @@ namespace Garage
                 services.AddSingleton<IApplicationRequest, ApplicationRequest>();
                 services.AddSingleton<IApplicationManager, ApplicationManager>();
                 services.AddSingleton<IUI, GarageUIApplication>();
-                // ToDo: Implement concrete event handlers as scoped services?
                 // Register event handlers
                 services.AddSingleton<CreateGarageRequestEventHandler>();
                 services.AddSingleton<CreateGarageResponseEventHandler>();
