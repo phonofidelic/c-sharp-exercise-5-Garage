@@ -1,6 +1,15 @@
 # Garage 1.0
 
-## Current project state
+## Overview
+Garage 1.0 consists of 3 projects:
+
+1. [Garage](Garage)
+2. [Garage.Library](Garage.Library)
+3. [Garage.UI](Garage.UI)
+
+<i>(Todo: add more info on project structure)</i>
+
+### Current project state
 The application starts up as a console application and shows a main menu with selectable actions.
 1. <b>Create new Garage</b>: re-initialize the garage with a new name and capacity (removes all current vehicles). 
 2. <b>List parked vehicles</b>: displays a list of all vehicles currently parked in the garage.
@@ -18,14 +27,7 @@ The application starts up as a console application and shows a main menu with se
 * Read and initialize application state from a json file
 * Improve project structuer (add sub-sections within projects)
 
-## Overview
-Garage 1.0 consists of 3 projects:
 
-1. [Garage](Garage)
-2. [Garage.Library](Garage.Library)
-3. [Garage.UI](Garage.UI)
-
-<i>(Todo: add more info on project structure)</i>
 
 ## Garage
 The main application project contains the Garage entities and UI implementation.
@@ -33,9 +35,19 @@ The main application project contains the Garage entities and UI implementation.
 <i>(Todo: add more info on Garage project implementation)</i>
 
 ## Garage.Library
-A supporting library project contains classes for implementing services and communication between services.
+A supporting library project contains classes for implementing a [Queue Service](https://learn.microsoft.com/en-us/dotnet/core/extensions/queue-service#create-queuing-services) and sending events from the Garage application to registered event handlers. Garage.Library provides an abstract `ApplicationEventHandler` base class for the Garage project to implement.
 
-<i>(Todo: add more info on Garage services)</i>
+### Queue service implementation:
+1. Actions performed in the Garage application are published to a `Channel` as an `ApplicationEvent`.
+1. Handlers are registered with the `ApplicationManager`
+1. These events are read by the `ApplicationProcessorJob` background service and handled by an `IApplicationManager`
+1. The `ApplicationManager` implementation calls `Handle` on each registered `ApplicationEventHandler`, passing the Event as an argument
+1. The registered Handler checks the type of Event to see if it can handle it and if so performs the requested action. Thwe handler publishes a new Event to the Channel if additional work is to be performed.
+
+<i>Links to recourses: <i/>
+* [Create a Queue Service](https://learn.microsoft.com/en-us/dotnet/core/extensions/queue-service#create-queuing-services)
+* [Building High-Performance .NET Apps With C# Channels](https://antondevtips.com/blog/building-high-performance-dotnet-apps-with-csharp-channels)
+* [Lightweight In-Memory Message Bus Using .NET Channels](https://www.milanjovanovic.tech/blog/lightweight-in-memory-message-bus-using-dotnet-channels)
 
 ## Garage.UI
 A library for implementing a console menu UI.
