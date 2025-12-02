@@ -23,10 +23,6 @@ namespace Garage
                 {
                     return new ApplicationStatus(-1, ex);
                 }
-                // ConsoleUI.WriteLineInfo("Press 'Esc.' to quit the application");
-
-                // ConsoleKeyInfo selection = ConsoleUI.GetSelectionFromReadKey("Press 'Esc.' to quit the application");
-                // if (selection.Key.Equals(ConsoleKey.Escape))
                 exitApplication = ConfirmExit(() => ConsoleUI.ReadKey(intercept: true), out _);
             } while((mainMenu.Selection?.Option != null) &&  !exitApplication);
 

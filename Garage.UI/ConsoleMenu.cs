@@ -45,19 +45,16 @@
                     var selectionInput = ConsoleUI.GetSelectionFromReadKey(_selectionPrompt);
                     MenuException = null;
 
-                    // if (MenuListItems.Count > 0)
-                    // {
-                        Selection = TryGetMenuSelectionFromConsoleKeyInfo(selectionInput);
-                        if (Selection.Option > 0)
-                        {
-                            var selectedItem = menuListItems
-                            .FirstOrDefault(item => item.Option.Equals(Selection.Option)) ??
-                                throw new Exception($"'{Selection.Option}' is not an available option. {_availableOptionsMessage}");
+                    Selection = TryGetMenuSelectionFromConsoleKeyInfo(selectionInput);
+                    if (Selection.Option > 0)
+                    {
+                        var selectedItem = menuListItems
+                        .FirstOrDefault(item => item.Option.Equals(Selection.Option)) ??
+                            throw new Exception($"'{Selection.Option}' is not an available option. {_availableOptionsMessage}");
 
-                            selectedItem?.Children?.Render();
-                            ResetMenuSelection();
-                        }
-                    // }
+                        selectedItem?.Children?.Render();
+                        ResetMenuSelection();
+                    }
                 }
                 catch (Exception ex)
                 {
