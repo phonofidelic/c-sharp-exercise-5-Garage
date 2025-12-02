@@ -2,7 +2,8 @@
 {
     public abstract class Vehicle : IParkable
     {
-        private Guid _id;
+        private Guid _id { get; init; }
+        public string Id  { get => _id.ToString(); }
 
         private string _name;
         public int Location { get; protected set; }
